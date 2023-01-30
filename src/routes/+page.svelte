@@ -1,8 +1,10 @@
 <script>
 	import ProdCard from "./ProdCard.svelte";
+    import Modal from '../components/Modal.svelte';
 
     const usID = 10;
     const poID = 1;
+    let modalOpen = false;
 </script>
 
 <style>
@@ -19,25 +21,19 @@
     }
 
     @media screen and (max-width: 700px){
-        .productSection {
+        .productSectionSub {
             grid-template-columns: 1fr 1fr 1fr;
         }
     }
 </style>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<p>Visit <a href="/test">/test</a> to see hej</p>
-<p class="bg-red-600 text-white">Testing</p>
-
 <div class="productSection mr-10">
     <div class="productSectionSub">
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek" userID={usID} productID={poID}/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek"/>
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek"/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek"/>
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek"/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek"/>
+        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
+        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
+        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
+        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
+        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
+        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
     </div>
-
 </div>
