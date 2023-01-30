@@ -1,24 +1,82 @@
 <script lang="ts">
+    import * as jq from 'jquery';
+
     let name:string;
     let price:string;
     let img:string;
     let link:string;
+    let userID:Number;
+    let productID:Number;
 
-    export {name, price, img, link};
+    export {name, price, img, link, userID, productID};
+
+    
+    function addToCart(){
+    	jq.ajax?.({
+            url: 'http://localhost:8000/user/addToCart',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                'userID': userID,
+                'productID': productID
+            }),
+            success: (d) => {
+                console.log(d);
+            },
+            error: (e) => {
+                if (e) {
+                    console.error("Err: ", e);
+                }
+            }
+    	})
+    }
+
+    function createAcc(){
+        jq.ajax?.({
+            url: 'http://localhost:8000/user/hej',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                'userID': userID,
+            }),
+            success: (d) => {
+                console.log(d);
+            },
+            error: (e) => {
+                if (e) {
+                    console.error("Err: ", e);
+                }
+            }
+    	})
+    }
+
+    //run to update their cart, how many items + which ones
+    function updateCart(){
+        //fetch from database
+    }
+    
 </script>
 
-<a href={link}>
-    <div class="ProdCard bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
+<div class="ProdCard bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
+    <a href={link}>
         <div class="thumbnail row-span-4 m-4">
             <img src={img} alt="Img Err" class="object-scale-down h-full w-full">
         </div>
-        <div class="productInfo p-2">
-            <div class="prodName float-left">
-                {name}
-            </div>
-            <div class="prodPrice float-right">
-                {price}
-            </div>
+    </a>
+    <div class="productInfo p-2">
+        <div class="prodName float-left">
+            {name}
+        </div>
+        <div class="prodPrice float-right">
+            {price}
         </div>
     </div>
-</a>
+    <button class="float-right border bg-red-600" on:click={addToCart}>
+        Add
+    </button>
+    <button class="float-right border bg-blue-600" on:click={createAcc}>
+        create
+    </button>
+</div>

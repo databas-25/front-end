@@ -1,6 +1,8 @@
 <script>
 	import ProdCard from "./ProdCard.svelte";
 
+    const usID = 10;
+    const poID = 1;
 </script>
 
 <style>
@@ -28,9 +30,9 @@
 <p>Visit <a href="/test">/test</a> to see hej</p>
 <p class="bg-red-600 text-white">Testing</p>
 
-<div class="productSection">
+<div class="productSection mr-10">
     <div class="productSectionSub">
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek"/>
+        <ProdCard img="fan.webp" name="Noctua" price="200 sek" userID={usID} productID={poID}/>
         <ProdCard img="lion.webp" name="Simba" price="2000000 sek"/>
         <ProdCard img="fan.webp" name="Noctua" price="200 sek"/>
         <ProdCard img="lion.webp" name="Simba" price="2000000 sek"/>
