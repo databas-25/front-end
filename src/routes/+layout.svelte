@@ -1,5 +1,21 @@
 <script>
 	import "../app.css";
+	import * as jq from 'jquery';
+	jq.ajax?.({
+		url: 'http://localhost:8000/hello',
+		method: 'POST',
+		success: (d) => {
+			console.log(d);
+		},
+		error: (e) => {
+			if (e) {
+				console.error(e);
+			}
+		}
+	})
+	// jq.get('localhost:8000/hello', (res) => {
+	// 	console.log(res);
+	// })
 </script>
 
 <div>
@@ -33,4 +49,3 @@
 		<slot />
 	</div>
 </div>
-  
