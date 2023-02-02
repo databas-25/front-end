@@ -48,7 +48,6 @@
 	</div>
 	<hr>
 	<slot></slot>
-	<hr>
 
 	<!-- svelte-ignore a11y-autofocus -->
 </div>

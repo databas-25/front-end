@@ -1,13 +1,39 @@
-<script>
+<script lang="ts">
 	import "../app.css";
-	import Modal from '../components/Modal.svelte';
+	import Modal from '@components/Modal.svelte';
+	import { user } from '@stores/user_store';
+	import jq from 'jquery';
+	import { onMount } from "svelte";
+
 	let loggedIn = false;
+
+	user.subscribe((u) => {
+		loggedIn = !!u;
+	});
+
 	let authModalOpen = false;
 	const TYPES = {
 		LOGIN: 1,
 		REGISTER: 2
 	}
+	const MESSAGES = {
+		EMPTY: '',
+		INVALID_EMAIL: 'Felaktig e-postadress',
+		INVALID_USERNAME: 'Felaktig användarnamn',
+		INVALID_PASSWORD: 'Felaktig lösenord',
+		NON_MATCHING_PASS: 'Lösenorden stämmer inte överrens',
+		USERNAME_TAKEN: 'Användarnamnet är upptaget',
+		UNKNOWN_ERROR: 'Ett oväntat fel har inträffat',
+	}
 	let authModalType = TYPES.LOGIN;
+
+	const authForm = {
+		username: '',
+		email: '',
+		password: '',
+		confPassword: '',
+	}
+	let authErrorMessage = MESSAGES.EMPTY;
 
 	function openMenu() {
 		menuOpen = true;
@@ -18,6 +44,109 @@
 		menuOpen = false;
 		document.removeEventListener('click', closeMenu)
 	}
+
+	function submitAuthModal(e: SubmitEvent) {
+		if (authModalType == TYPES.LOGIN) {
+			submitLogin(e);
+		} else {
+			submitRegister(e);
+		}
+	}
+
+	function validateLogin(): boolean {
+		return true;
+	}
+
+	function validateRegister(): boolean {
+		if (authForm.username.length < 3) {
+			authErrorMessage = MESSAGES.INVALID_USERNAME;
+			return false;
+		}
+		if (authForm.email.length < 8) {
+			authErrorMessage = MESSAGES.INVALID_EMAIL;
+			return false;
+		}
+		if (authForm.password.length < 6) {
+			authErrorMessage = MESSAGES.INVALID_PASSWORD;
+			return false;
+		}
+		if (authForm.password != authForm.confPassword) {
+			authErrorMessage = MESSAGES.NON_MATCHING_PASS;
+			return false;
+		}
+		return true;
+	}
+
+	function submitLogin(e: SubmitEvent) {
+		if (validateLogin()) {
+			jq.ajax?.({
+				url: 'http://localhost:8000/user/sign_in',
+				method: 'POST',
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify(authForm),
+				success: (d) => {
+					authModalOpen = false;
+					user.set(d.user)
+					globalThis.localStorage.setItem("auth_token", d.token)
+				},
+				error: (e) => {
+					authErrorMessage = ""
+				},
+			});
+		}
+	}
+
+	function submitRegister(e: SubmitEvent) {
+		if (validateRegister()) {
+			jq.ajax?.({
+				url: 'http://localhost:8000/user/sign_up',
+				method: 'POST',
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify(authForm),
+				success: (d) => {
+					authModalOpen = false;
+				},
+				error: (e) => {
+					switch (e.responseJSON.message) {
+						case 'duplicate_keys':
+							authErrorMessage = MESSAGES.USERNAME_TAKEN;
+							break;
+						default:
+							authErrorMessage = MESSAGES.UNKNOWN_ERROR;
+							break;
+					}
+				},
+			});
+		}
+	}
+
+	function logout() {
+		window.localStorage.removeItem('auth_token');
+		user.set(null);
+	}
+
+	onMount(() => {
+		const token = window.localStorage.getItem("auth_token");
+		if (token) {
+			jq.ajax?.({
+				url: 'http://localhost:8000/user/token_sign_in',
+				method: 'POST',
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					token
+				}),
+				success: (d) => {
+					user.set(d.user);
+				},
+				error: () => {
+					window.localStorage.removeItem("auth_token");
+				},
+			});
+		}
+	})
 
 	let menuOpen = false;
 </script>
@@ -36,15 +165,20 @@
 					</div>
 				</div>
 				<div class="{menuOpen? '': 'invisible'} absolute right-0 w-60 overflow-clip rounded-lg border-2 border-slate-400 bg-white group-hover:visible cursor-pointer">
-					<div class="p-2 hover:bg-slate-200">
-						<p>Profil</p>
-					</div>
-					<div class="p-2 hover:bg-slate-200">
-						<p>Kundvagn</p>
-					</div>
+					
+					<a href="/test">
+						<div class="p-2 hover:bg-slate-200">
+							<p>Profil</p>
+						</div>
+					</a>
+					<a href="/cart">
+						<div class="p-2 hover:bg-slate-200">
+							<p>Kundvagn</p>
+						</div>
+					</a>
 					<hr/>
 					{#if loggedIn}
-						<div class="p-2 hover:bg-slate-200">
+						<div class="p-2 hover:bg-slate-200" on:click={logout} on:keydown={() => {}}>
 							<p>Logga ut</p>
 						</div>
 					{:else}
@@ -66,16 +200,32 @@
 		<Modal on:close={() => authModalOpen = false}>
 			
 			<h2 slot="header" class="text-xl">{authModalType == TYPES.LOGIN? 'Logga in': 'Registrera'}</h2>
-			<div class="p-2">
-				<p>E-postadress</p>
-				<input type="text" class="input-text"/>
+			<form class="p-2" on:submit={submitAuthModal}>
+				<p class="mt-2">Användarnamn</p>
+				<input type="text" class="input-text" name="username" bind:value={authForm.username}/>
+				{#if authModalType == TYPES.REGISTER}
+					<p class="mt-2">E-postadress</p>
+					<input type="text" class="input-text" name="email" bind:value={authForm.email}/>
+				{/if}
 				<p class="mt-2">Lösenord</p>
-				<input type="password" class="input-text"/>
+				<input type="password" class="input-text" name="password" bind:value={authForm.password}/>
 				{#if authModalType == TYPES.REGISTER}
 					<p class="mt-2">Bekräfta lösenord</p>
-					<input type="password" class="input-text"/>
+					<input type="password" class="input-text" name="conf_password" bind:value={authForm.confPassword}/>
 				{/if}
-			</div>
+				<div class="flex justify-end">
+					<input
+						type="submit"
+						class="bg-sky-600 py-2 px-3 mt-5 rounded text-white"
+						name="submit"
+						value={authModalType == TYPES.LOGIN? 'Logga in': 'Registrera'}
+					/>
+				</div>
+			</form>
+			{#if authErrorMessage != MESSAGES.EMPTY}
+				<p class="text-red-600">{authErrorMessage}</p>
+			{/if}
+			<p></p>
 		</Modal>
 	{/if}
 </div>

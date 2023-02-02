@@ -1,6 +1,5 @@
 <script>
 	import ProdCard from "./ProdCard.svelte";
-    import Modal from '../components/Modal.svelte';
 
     const usID = 10;
     const poID = 1;
