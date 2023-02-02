@@ -2,6 +2,7 @@
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
 	import { user } from '@stores/user_store';
+	import { modalOpen } from "~/stores/modal_store";
 	import jq from 'jquery';
 	import { onMount } from "svelte";
 
@@ -11,7 +12,6 @@
 		loggedIn = !!u;
 	});
 
-	let authModalOpen = false;
 	const TYPES = {
 		LOGIN: 1,
 		REGISTER: 2
@@ -25,7 +25,13 @@
 		USERNAME_TAKEN: 'Användarnamnet är upptaget',
 		UNKNOWN_ERROR: 'Ett oväntat fel har inträffat',
 	}
+
+	let authModalOpen = false;
 	let authModalType = TYPES.LOGIN;
+	modalOpen.subscribe(({open, type}) => {
+		authModalOpen = open;
+		authModalType = type;
+	});
 
 	const authForm = {
 		username: '',
@@ -182,10 +188,10 @@
 							<p>Logga ut</p>
 						</div>
 					{:else}
-						<div class="p-2 hover:bg-slate-200" on:click={() => {authModalType = TYPES.LOGIN; authModalOpen = true;}} on:keydown={() => {}}>
+						<div class="p-2 hover:bg-slate-200" on:click={() => {modalOpen.set({open: true, type: TYPES.LOGIN})}} on:keydown={() => {}}>
 							<p>Logga in</p>
 						</div>
-						<div class="p-2 hover:bg-slate-200" on:click={() => {authModalType = TYPES.REGISTER; authModalOpen = true;}} on:keydown={() => {}}>
+						<div class="p-2 hover:bg-slate-200" on:click={() => {modalOpen.set({open: true, type: TYPES.REGISTER})}} on:keydown={() => {}}>
 							<p>Registrera</p>
 						</div>
 					{/if}
@@ -197,7 +203,7 @@
 		<slot />
 	</div>
 	{#if authModalOpen}
-		<Modal on:close={() => authModalOpen = false}>
+		<Modal on:close={() => modalOpen.set({open: false, type: TYPES.LOGIN})}>
 			
 			<h2 slot="header" class="text-xl">{authModalType == TYPES.LOGIN? 'Logga in': 'Registrera'}</h2>
 			<form class="p-2" on:submit={submitAuthModal}>

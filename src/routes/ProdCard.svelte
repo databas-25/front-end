@@ -1,55 +1,43 @@
 <script lang="ts">
     import * as jq from 'jquery';
+    import { user, type User } from '@stores/user_store';
+    import { modalOpen } from '@stores/modal_store';
 
     let name:string;
     let price:string;
     let img:string;
     let link:string;
     let userID:Number;
-    let productID:Number;
+    let productID:Number = Math.ceil(Math.random() * 50);
 
-    export {name, price, img, link, userID, productID};
+    user.subscribe((u) => userID = u?.User_id ?? -1)
+
+    export {name, price, img, link};
 
     
     function addToCart(){
-    	jq.ajax?.({
-            url: 'http://localhost:8000/user/addToCart',
-            method: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                'userID': userID,
-                'productID': productID
-            }),
-            success: (d) => {
-                console.log(d);
-            },
-            error: (e) => {
-                if (e) {
-                    console.error("Err: ", e);
+        if (userID !== -1) {
+            jq.ajax?.({
+                url: 'http://localhost:8000/user/addToCart',
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    'userID': userID,
+                    'productID': productID
+                }),
+                success: (d) => {
+                    console.log(d);
+                },
+                error: (e) => {
+                    if (e) {
+                        console.error("Err: ", e);
+                    }
                 }
-            }
-    	})
-    }
-
-    function createAcc(){
-        jq.ajax?.({
-            url: 'http://localhost:8000/user/hej',
-            method: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                'userID': userID,
-            }),
-            success: (d) => {
-                console.log(d);
-            },
-            error: (e) => {
-                if (e) {
-                    console.error("Err: ", e);
-                }
-            }
-    	})
+            })
+        } else {
+            modalOpen.set({ open: true, type: 1 });
+        }
     }
 
     //run to update their cart, how many items + which ones
@@ -75,8 +63,5 @@
     </div>
     <button class="float-right border bg-red-600" on:click={addToCart}>
         Add
-    </button>
-    <button class="float-right border bg-blue-600" on:click={createAcc}>
-        create
     </button>
 </div>
