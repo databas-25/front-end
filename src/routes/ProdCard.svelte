@@ -47,21 +47,23 @@
     
 </script>
 
-<div class="ProdCard bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
+<div class="ProdCard relative z-0 bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
     <a href={link}>
         <div class="thumbnail row-span-4 m-4">
             <img src={img} alt="Img Err" class="object-scale-down h-full w-full">
         </div>
     </a>
-    <div class="productInfo p-2">
-        <div class="prodName float-left">
-            {name}
+    <div class="absolute bottom-0 left-0 right-0 flex flex-col">
+        <div class="productInfo p-1">
+            <div class="prodName float-left">
+                {name}
+            </div>
+            <div class="prodPrice float-right">
+                {price}
+            </div>
         </div>
-        <div class="prodPrice float-right">
-            {price}
-        </div>
+        <button class="h-8 border bg-red-600" on:click={addToCart}>
+            Add
+        </button>
     </div>
-    <button class="float-right border bg-red-600" on:click={addToCart}>
-        Add
-    </button>
 </div>

@@ -14,7 +14,7 @@
 
 	const TYPES = {
 		LOGIN: 1,
-		REGISTER: 2
+		REGISTER: 2,
 	}
 	const MESSAGES = {
 		EMPTY: '',
@@ -28,6 +28,7 @@
 
 	let authModalOpen = false;
 	let authModalType = TYPES.LOGIN;
+
 	modalOpen.subscribe(({open, type}) => {
 		authModalOpen = open;
 		authModalType = type;
@@ -51,7 +52,7 @@
 		document.removeEventListener('click', closeMenu)
 	}
 
-	function submitAuthModal(e: SubmitEvent) {
+	function submitAuthModal(e: MouseEvent) {
 		if (authModalType == TYPES.LOGIN) {
 			submitLogin(e);
 		} else {
@@ -83,10 +84,11 @@
 		return true;
 	}
 
-	function submitLogin(e: SubmitEvent) {
+	function submitLogin(e: MouseEvent) {
+		const ip = window.location.hostname;
 		if (validateLogin()) {
 			jq.ajax?.({
-				url: 'http://localhost:8000/user/sign_in',
+				url: `http://${ip}:8000/user/sign_in`,
 				method: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -103,10 +105,11 @@
 		}
 	}
 
-	function submitRegister(e: SubmitEvent) {
+	function submitRegister(e: MouseEvent) {
+		const ip = window.location.hostname;
 		if (validateRegister()) {
 			jq.ajax?.({
-				url: 'http://localhost:8000/user/sign_up',
+				url: `http://${ip}:8000/user/sign_up`,
 				method: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -134,10 +137,11 @@
 	}
 
 	onMount(() => {
+		const ip = window.location.hostname;
 		const token = window.localStorage.getItem("auth_token");
 		if (token) {
 			jq.ajax?.({
-				url: 'http://localhost:8000/user/token_sign_in',
+				url: `http://${ip}:8000/user/token_sign_in`,
 				method: 'POST',
 				dataType: 'json',
 				contentType: 'application/json',
@@ -170,29 +174,29 @@
 						<i class="bi bi-list-task text-xl leading-7"></i>
 					</div>
 				</div>
-				<div class="{menuOpen? '': 'invisible'} absolute right-0 w-60 overflow-clip rounded-lg border-2 border-slate-400 bg-white group-hover:visible cursor-pointer">
+				<div class="{menuOpen? '': 'invisible'} absolute z-10 right-0 w-60 overflow-clip rounded-lg border-2 border-slate-400 bg-white group-hover:visible cursor-pointer">
 					
 					<a href="/test">
 						<div class="p-2 hover:bg-slate-200">
-							<p>Profil</p>
+							<p>Profile</p>
 						</div>
 					</a>
 					<a href="/cart">
 						<div class="p-2 hover:bg-slate-200">
-							<p>Kundvagn</p>
+							<p>Shopping cart</p>
 						</div>
 					</a>
 					<hr/>
 					{#if loggedIn}
 						<div class="p-2 hover:bg-slate-200" on:click={logout} on:keydown={() => {}}>
-							<p>Logga ut</p>
+							<p>Logout</p>
 						</div>
 					{:else}
 						<div class="p-2 hover:bg-slate-200" on:click={() => {modalOpen.set({open: true, type: TYPES.LOGIN})}} on:keydown={() => {}}>
-							<p>Logga in</p>
+							<p>Login</p>
 						</div>
 						<div class="p-2 hover:bg-slate-200" on:click={() => {modalOpen.set({open: true, type: TYPES.REGISTER})}} on:keydown={() => {}}>
-							<p>Registrera</p>
+							<p>Register</p>
 						</div>
 					{/if}
 				</div>
@@ -205,29 +209,30 @@
 	{#if authModalOpen}
 		<Modal on:close={() => modalOpen.set({open: false, type: TYPES.LOGIN})}>
 			
-			<h2 slot="header" class="text-xl">{authModalType == TYPES.LOGIN? 'Logga in': 'Registrera'}</h2>
-			<form class="p-2" on:submit={submitAuthModal}>
-				<p class="mt-2">Användarnamn</p>
+			<h2 slot="header" class="text-xl">{authModalType == TYPES.LOGIN? 'Login': 'Register'}</h2>
+			<div class="p-2">
+				<p class="mt-2">Username</p>
 				<input type="text" class="input-text" name="username" bind:value={authForm.username}/>
 				{#if authModalType == TYPES.REGISTER}
-					<p class="mt-2">E-postadress</p>
+					<p class="mt-2">Email</p>
 					<input type="text" class="input-text" name="email" bind:value={authForm.email}/>
 				{/if}
-				<p class="mt-2">Lösenord</p>
+				<p class="mt-2">Password</p>
 				<input type="password" class="input-text" name="password" bind:value={authForm.password}/>
 				{#if authModalType == TYPES.REGISTER}
-					<p class="mt-2">Bekräfta lösenord</p>
+					<p class="mt-2">Confirm password</p>
 					<input type="password" class="input-text" name="conf_password" bind:value={authForm.confPassword}/>
 				{/if}
 				<div class="flex justify-end">
-					<input
-						type="submit"
+					<button
+						type="button"
 						class="bg-sky-600 py-2 px-3 mt-5 rounded text-white"
-						name="submit"
-						value={authModalType == TYPES.LOGIN? 'Logga in': 'Registrera'}
-					/>
+						on:click={submitAuthModal}
+					>
+						{authModalType == TYPES.LOGIN? 'Login': 'Register'}
+					</button>
 				</div>
-			</form>
+			</div>
 			{#if authErrorMessage != MESSAGES.EMPTY}
 				<p class="text-red-600">{authErrorMessage}</p>
 			{/if}

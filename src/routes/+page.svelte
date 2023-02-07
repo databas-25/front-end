@@ -28,11 +28,11 @@
 
 <div class="productSection mr-10">
     <div class="productSectionSub">
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
-        <ProdCard img="fan.webp" name="Noctua" price="200 sek" link=""/>
-        <ProdCard img="lion.webp" name="Simba" price="2000000 sek" link=""/>
+        <ProdCard img="fan.webp" name="Fan 1" price="199 sek" link=""/>
+        <ProdCard img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvlz_EFNKYgW-4NRGUKM8KSIJQGCPnUbGWqQ&usqp=CAU" name="Fan 2" price="459 sek" link=""/>
+        <ProdCard img="https://productimages.biltema.com/v1/Image/article/xlarge/443060/1" name="Fan 3" price="249 sek" link=""/>
+        <ProdCard img="https://m.media-amazon.com/images/I/81U06MS2NiL._AC_SX466_.jpg" name="Fan 4" price="369 sek" link=""/>
+        <ProdCard img="https://i5.walmartimages.com/asr/0eb01f80-ee74-4343-b0a7-2629f7fae4b6.6beb73fb0c3e04f2caedce138495b98f.jpeg" name="Fan 5" price="109 sek" link=""/>
+        <ProdCard img="https://cdn.thewirecutter.com/wp-content/media/2022/05/roomfans_2048px_honeywell.jpg" name="Fan 6" price="159 sek" link=""/>
     </div>
 </div>
