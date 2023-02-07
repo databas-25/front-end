@@ -1,5 +1,6 @@
 <script lang="ts">
     import * as jq from 'jquery';
+    import web from '~/script/web';
     import { user, type User } from '@stores/user_store';
     import { modalOpen } from '@stores/modal_store';
 
@@ -17,24 +18,18 @@
     
     function addToCart(){
         if (userID !== -1) {
-            jq.ajax?.({
-                url: 'http://localhost:8000/user/addToCart',
-                method: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({
-                    'userID': userID,
-                    'productID': productID
-                }),
-                success: (d) => {
+            web(
+                '/addToCart',
+                { userID, productID },
+                (d) => {
                     console.log(d);
                 },
-                error: (e) => {
+                (e) => {
                     if (e) {
                         console.error("Err: ", e);
                     }
                 }
-            })
+            )
         } else {
             modalOpen.set({ open: true, type: 1 });
         }

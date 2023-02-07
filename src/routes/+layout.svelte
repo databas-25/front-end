@@ -1,21 +1,33 @@
 <script lang="ts">
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
-	import { user } from '@stores/user_store';
+	import { user, type User } from '@stores/user_store';
 	import { modalOpen } from "~/stores/modal_store";
-	import jq from 'jquery';
+	import web from '~/script/web';
 	import { onMount } from "svelte";
 
 	let loggedIn = false;
+	let permissions = 0;
+
+	function validUser(user: User | null): user is User {
+		return !!user;
+	}
 
 	user.subscribe((u) => {
-		loggedIn = !!u;
+		console.log(u);
+		if (validUser(u)) {
+			loggedIn = true;
+			permissions = u.permissions;
+		} else {
+			loggedIn = false;
+		}
 	});
 
 	const TYPES = {
 		LOGIN: 1,
 		REGISTER: 2,
 	}
+
 	const MESSAGES = {
 		EMPTY: '',
 		INVALID_EMAIL: 'Felaktig e-postadress',
@@ -85,39 +97,34 @@
 	}
 
 	function submitLogin(e: MouseEvent) {
-		const ip = window.location.hostname;
 		if (validateLogin()) {
-			jq.ajax?.({
-				url: `http://${ip}:8000/user/sign_in`,
-				method: 'POST',
-				dataType: 'json',
-				contentType: 'application/json',
-				data: JSON.stringify(authForm),
-				success: (d) => {
+			web(
+				'sign_in',
+				authForm,
+				(d) => {
 					authModalOpen = false;
 					user.set(d.user)
-					globalThis.localStorage.setItem("auth_token", d.token)
+					globalThis.localStorage.setItem('auth_token', d.token);
 				},
-				error: (e) => {
+				(e) => {
 					authErrorMessage = ""
 				},
-			});
+			)
 		}
 	}
 
 	function submitRegister(e: MouseEvent) {
 		const ip = window.location.hostname;
 		if (validateRegister()) {
-			jq.ajax?.({
-				url: `http://${ip}:8000/user/sign_up`,
-				method: 'POST',
-				dataType: 'json',
-				contentType: 'application/json',
-				data: JSON.stringify(authForm),
-				success: (d) => {
+			web(
+				'sign_up',
+				authForm,
+				(d) => {
 					authModalOpen = false;
+					user.set(d.user)
+					globalThis.localStorage.setItem('auth_token', d.token)
 				},
-				error: (e) => {
+				(e) => {
 					switch (e.responseJSON.message) {
 						case 'duplicate_keys':
 							authErrorMessage = MESSAGES.USERNAME_TAKEN;
@@ -127,7 +134,7 @@
 							break;
 					}
 				},
-			});
+			)
 		}
 	}
 
@@ -140,21 +147,16 @@
 		const ip = window.location.hostname;
 		const token = window.localStorage.getItem("auth_token");
 		if (token) {
-			jq.ajax?.({
-				url: `http://${ip}:8000/user/token_sign_in`,
-				method: 'POST',
-				dataType: 'json',
-				contentType: 'application/json',
-				data: JSON.stringify({
-					token
-				}),
-				success: (d) => {
+			web(
+				'token_sign_in',
+				{ token },
+				(d) => {
 					user.set(d.user);
 				},
-				error: () => {
+				() => {
 					window.localStorage.removeItem("auth_token");
 				},
-			});
+			);
 		}
 	})
 
@@ -164,7 +166,9 @@
 <div>
 	<div class="flex select-none justify-between border-b-2 border-slate-400 p-2 align-baseline">
 		<div class="text-2xl">
-			<p><i class="bi bi-fan"></i>nly <span class="text-4xl text-sky-500" style="font-family: 'Yesteryear'">Fans</span></p>
+			<a href="/">
+				<p><i class="bi bi-fan"></i>nly <span class="text-4xl text-sky-500" style="font-family: 'Yesteryear'">Fans</span></p>
+			</a>
 		</div>
 		<div class="flex gap-4">
 			<div class="relative">
