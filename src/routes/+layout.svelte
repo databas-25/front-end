@@ -8,7 +8,7 @@
 
 	let loggedIn = false;
 	let permissions = 0;
-
+	let username = '';
 	function validUser(user: User | null): user is User {
 		return !!user;
 	}
@@ -18,6 +18,7 @@
 		if (validUser(u)) {
 			loggedIn = true;
 			permissions = u.permissions;
+			username = u.user_name;
 		} else {
 			loggedIn = false;
 		}
@@ -169,6 +170,9 @@
 			<a href="/">
 				<p><i class="bi bi-fan"></i>nly <span class="text-4xl text-sky-500" style="font-family: 'Yesteryear'">Fans</span></p>
 			</a>
+		</div>
+		<div>
+			logged in as: {username}
 		</div>
 		<div class="flex gap-4">
 			<div class="relative">
