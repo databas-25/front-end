@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { disableScrollHandling } from "$app/navigation";
-<<<<<<< Updated upstream
+	import post from "~/script/web";
 	import { user, validUser } from "~/stores/user_store";
-=======
-	import { user } from "~/stores/user_store";
->>>>>>> Stashed changes
-
 
 
     let profileName: string;
     let email: string;
+    let profileNameTmp: string;
+    let emailTmp: string;
+    let userId: number;
+    let succ = 0;
     
     profileName = "bob";
     email = "bob@example.bob";
@@ -18,15 +17,16 @@
 		if (validUser(u)) {
 			profileName = u.user_name;
 			email = u.email;
-		} else {
-
+            profileNameTmp = profileName;
+            emailTmp = email;
 		}
     });
 
-
-
-    let profileNameTmp = profileName;
-    let emailTmp = email;
+    let items = [
+        {name: "fläkt", id: 12387, price: 55, date: 2002}, 
+        {name: "flökt", id: 12384, price: 525, date: 2001}, 
+        {name: "flåkt", id: 12381, price: 52, date: 2004}
+    ];
 
     const SUB_TABS = {
         ACCOUNT_DETAILS: 0,
@@ -40,6 +40,28 @@
     function saveNewPersonalDetails(){
         profileName = profileNameTmp;
         email = emailTmp;
+        post(
+            "update", 
+            {
+                user: userId, 
+                email: email, 
+                username : profileName
+            }, 
+            (d) => {
+                succ = 1;
+                user.update((u) => {
+                    if(validUser(u)) {
+                        u.email = email;
+                        u.user_name = profileName;
+                    }
+                    return u;
+                });
+            }, 
+            (e) => {
+                succ = 2;
+                console.error(e);
+            }
+        )
     }
 
     function discardNetPersonalDetails(){
@@ -65,44 +87,42 @@
                     <p class="infoValue">{profileName}</p>
                     <p class="infoValue">{email}</p>
                 </div>
-                <div class=" col-span-7"></div>
+                <div class=" col-span-7">
+                    {#if succ == 1}
+                        <p class=" text-green-600">Successfully changed</p>
+                    {:else if succ == 2}
+                        <p class=" text-red-600">An error occurred</p>
+                    {/if}
+                </div>
                 <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>changePersInfo=true}>Edit</button>
             {:else}
                 <div class="infoValues text-center fit-content-center col-span-6 grid grid-rows-2">
-                    <input class="infoValueIn" bind:value={profileNameTmp} placeholder={profileNameTmp} required/> <!-- fix binding so you might not need it maybe -->
-                    <input class="infoValueIn" bind:value={emailTmp} placeholder={emailTmp} required/>
+                    <input class="infoValueIn" bind:value={profileNameTmp} required/> <!-- fix binding so you might not need it maybe -->
+                    <input class="infoValueIn" bind:value={emailTmp} required/>
                 </div>
-                <div class=" col-span-6"></div>
                 <button class="buttn bg-green-400 hover:bg-green-700 focus:bg-green-900" on:click={()=>{changePersInfo=false;saveNewPersonalDetails()}}>Save</button>
                 <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>{changePersInfo=false;discardNetPersonalDetails()}}>Cancel</button>
             {/if}
         </div>
     {:else if current_tab==SUB_TABS.ORDER_HISTORY}
-        <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit grid grid-cols-4 bg-gray-500">
-            <div class="orderNames">
-                <p class=" bg-white">Name</p>
-                <p class="orderName">A jojo</p>
-                <p class="orderName">A doll</p>
-                <p class="orderName">A dvd</p>
+        <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit bg-gray-500">
+
+            <div class="grid grid-cols-4 header">
+                <div><p>Item name</p></div>
+                <div><p>Order ID</p></div>
+                <div><p>Date</p></div>
+                <div><p>Price</p></div>
             </div>
-            <div class="orderIDs">
-                <p class=" bg-white">Order ID</p>
-                <p class="orderID"> 92432</p>
-                <p class="orderID"> 92433</p>
-                <p class="orderID"> 92434</p>
-            </div>
-            <div class="orderDates">
-                <p class=" bg-white">Date</p>
-                <p class="orderDate">2002</p>
-                <p class="orderDate">2003</p>
-                <p class="orderDate">2006</p>
-            </div>
-            <div class="orderPrices ">
-                <p class=" bg-white">Price</p>
-                <p class="orderPrice">19 sek</p>
-                <p class="orderPrice">149 sek</p>
-                <p class="orderPrice">98 sek</p>
-            </div>
+        
+            {#each items as item}
+                <div class="grid grid-cols-4 entries">
+                    <div><p>{item.name}</p></div>
+                    <div><p>{item.id}</p></div>
+                    <div><p>{item.date}</p></div>
+                    <div><p>{item.price}</p></div>
+                </div>
+            {/each}
+
         </div>
     {:else}
         <div>
@@ -146,26 +166,21 @@
         @apply bg-yellow-100;
     }
 
-    .orderName:nth-child(even){
-        @apply bg-gray-400;
-    }
-    
-    .orderID:nth-child(odd){
-        @apply bg-gray-400;
-    }
-
-    .orderDate:nth-child(even){
-        @apply bg-gray-400;
-    }
-
-    .orderPrice:nth-child(odd){
-        @apply bg-gray-400;
-    }
-
-
     .buttn{
         @apply col-span-1 rounded-full m-1;
     }
     
+    .header{
+        @apply bg-sky-400 p-1;
+    }
+
+    .entries{
+        @apply bg-sky-300;
+    }
+
+    .entries:nth-child(even){
+        @apply bg-sky-200;
+    }
+
 </style>
 
