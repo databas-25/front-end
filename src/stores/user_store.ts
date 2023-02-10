@@ -4,11 +4,5 @@ export function validUser(user: User | null): user is User {
     return !!user;
 }
 
-export type User = {
-    User_id: number,
-    user_name: string,
-    permissions: number
-}
-
 export const user: Writable<User | null> = writable();
 // export const token: Writable<string | null> = writable()

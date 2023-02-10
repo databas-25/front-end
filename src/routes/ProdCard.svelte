@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as jq from 'jquery';
-    import web from '~/script/web';
-    import { user, type User } from '@stores/user_store';
+    import post from '~/script/web';
+    import { user } from '@stores/user_store';
     import { modalOpen } from '@stores/modal_store';
 
     let name:string;
@@ -18,7 +18,7 @@
     
     function addToCart(){
         if (userID !== -1) {
-            web(
+            post(
                 '/addToCart',
                 { userID, productID },
                 (d) => {
