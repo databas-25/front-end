@@ -228,7 +228,7 @@
 							</div>
 						</a>
 					{:else}
-						<a href="/test">
+						<a href="/profile">
 							<div class="p-2 hover:bg-slate-200">
 								<p>Profile</p>
 							</div>

@@ -1,15 +1,25 @@
 <script lang="ts">
 	import { disableScrollHandling } from "$app/navigation";
+	import { user, validUser } from "~/stores/user_store";
 
 
 
-    let profileName:string;
-    let email:string;
+    let profileName: string;
+    let email: string;
     
+    profileName = "bob";
+    email = "bob@example.bob";
 
-    //export{profileName, email};
-    profileName = "johnsson";
-    email = "johnson@disableScrollHandling.com";
+    user.subscribe((u) => {
+		if (validUser(u)) {
+			profileName = u.user_name;
+			email = u.email;
+		} else {
+
+		}
+    });
+
+
 
     let profileNameTmp = profileName;
     let emailTmp = email;

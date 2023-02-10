@@ -14,6 +14,7 @@ declare global {
 		User_id: number,
 		user_name: string,
 		permission: number,
+		email: string,
 	}
 	
 	interface Product {
