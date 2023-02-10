@@ -1,26 +1,65 @@
 <script lang="ts">
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
-	import { user, type User } from '@stores/user_store';
+	import { user } from '@stores/user_store';
 	import { modalOpen } from "~/stores/modal_store";
-	import web from '~/script/web';
+	import post from '~/script/web';
 	import { onMount } from "svelte";
 
-	let loggedIn = false;
-	let permissions = 0;
-	let username = '';
+	import { page } from "$app/stores";
+	import { goto } from "$app/navigation";
+	import { browser } from "$app/environment";
+
 	function validUser(user: User | null): user is User {
 		return !!user;
 	}
 
-	user.subscribe((u) => {
-		console.log(u);
-		if (validUser(u)) {
-			loggedIn = true;
-			permissions = u.permissions;
-			username = u.user_name;
+	const ACCESS = {
+		ADMIN: [
+			"/products"
+		],
+		LOGGED_IN: [
+			"/profile"
+		]
+	}
+
+	const STATES = {
+		AUTHORIZING: 0,
+		AUTHORIZED: 1,
+		UNAUTHORIZED: 2,
+	}
+
+	let state = STATES.AUTHORIZING;
+	let hasAccessToPage = true;
+	let permission = 0;
+	let username = '';
+
+	$: {
+		if (ACCESS.ADMIN.includes($page.url.pathname)) {
+			hasAccessToPage = state == STATES.AUTHORIZED && permission >= 10
+		} else if (ACCESS.LOGGED_IN.includes($page.url.pathname)) {
+			hasAccessToPage = state == STATES.AUTHORIZED;
 		} else {
-			loggedIn = false;
+			hasAccessToPage = true;
+		}
+
+		if (state != STATES.AUTHORIZING && !hasAccessToPage) {
+			if (browser) {
+				goto('/');
+			} else {
+				onMount(() => goto('/'));
+			}
+		}
+	}
+
+	user.subscribe((u) => {
+		if (validUser(u)) {
+			username = u.user_name;
+			permission = u.permission;
+			state = STATES.AUTHORIZED;
+		} else {
+			permission = 0;
+			state = STATES.UNAUTHORIZED;
 		}
 	});
 
@@ -37,6 +76,7 @@
 		NON_MATCHING_PASS: 'Lösenorden stämmer inte överrens',
 		USERNAME_TAKEN: 'Användarnamnet är upptaget',
 		UNKNOWN_ERROR: 'Ett oväntat fel har inträffat',
+		LOGIN_FAILED: 'Inloggningen misslyckades',
 	}
 
 	let authModalOpen = false;
@@ -99,16 +139,18 @@
 
 	function submitLogin(e: MouseEvent) {
 		if (validateLogin()) {
-			web(
+			post(
 				'sign_in',
 				authForm,
 				(d) => {
+					console.log("Sign in success?");
 					authModalOpen = false;
 					user.set(d.user)
 					globalThis.localStorage.setItem('auth_token', d.token);
 				},
 				(e) => {
-					authErrorMessage = ""
+					console.log("Sign in failed")
+					authErrorMessage = MESSAGES.LOGIN_FAILED;
 				},
 			)
 		}
@@ -117,7 +159,7 @@
 	function submitRegister(e: MouseEvent) {
 		const ip = window.location.hostname;
 		if (validateRegister()) {
-			web(
+			post(
 				'sign_up',
 				authForm,
 				(d) => {
@@ -145,10 +187,9 @@
 	}
 
 	onMount(() => {
-		const ip = window.location.hostname;
 		const token = window.localStorage.getItem("auth_token");
 		if (token) {
-			web(
+			post(
 				'token_sign_in',
 				{ token },
 				(d) => {
@@ -183,19 +224,26 @@
 					</div>
 				</div>
 				<div class="{menuOpen? '': 'invisible'} absolute z-10 right-0 w-60 overflow-clip rounded-lg border-2 border-slate-400 bg-white group-hover:visible cursor-pointer">
-					
-					<a href="/test">
-						<div class="p-2 hover:bg-slate-200">
-							<p>Profile</p>
-						</div>
-					</a>
-					<a href="/cart">
-						<div class="p-2 hover:bg-slate-200">
-							<p>Shopping cart</p>
-						</div>
-					</a>
+					{#if permission >= 10}
+						<a href="/products">
+							<div class="p-2 hover:bg-slate-200">
+								<p>Products</p>
+							</div>
+						</a>
+					{:else}
+						<a href="/test">
+							<div class="p-2 hover:bg-slate-200">
+								<p>Profile</p>
+							</div>
+						</a>
+						<a href="/cart">
+							<div class="p-2 hover:bg-slate-200">
+								<p>Shopping cart</p>
+							</div>
+						</a>
+					{/if}
 					<hr/>
-					{#if loggedIn}
+					{#if state == STATES.AUTHORIZED}
 						<div class="p-2 hover:bg-slate-200" on:click={logout} on:keydown={() => {}}>
 							<p>Logout</p>
 						</div>
@@ -212,7 +260,13 @@
 		</div>
 	</div>
 	<div>
-		<slot />
+		{#if hasAccessToPage}
+			<slot />
+		{:else if state == STATES.AUTHORIZING}
+			<p>Authorizing...</p>
+		{:else if state == STATES.UNAUTHORIZED}
+			<p>Not logged in</p>
+		{/if}
 	</div>
 	{#if authModalOpen}
 		<Modal on:close={() => modalOpen.set({open: false, type: TYPES.LOGIN})}>
