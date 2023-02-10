@@ -9,6 +9,30 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 	}
+
+	interface User {
+		User_id: number,
+		user_name: string,
+		permission: number,
+	}
+	
+	interface Product {
+		Product_id?: number,
+		product_name: string,
+		img_address: string,
+		price: number,
+		description: string,
+		manufacturer: string,
+		radius?: number,
+	}
+
+	interface BasketItem {
+		Product_id?: number,
+		product_name: string,
+		price: number,
+		amount: number,
+	}
 }
+
 
 export {};

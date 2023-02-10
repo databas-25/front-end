@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
-	import { user, type User } from '@stores/user_store';
+	import { user, type User , validUser } from '@stores/user_store';
 	import { modalOpen } from "~/stores/modal_store";
 	import web from '~/script/web';
 	import { onMount } from "svelte";
@@ -9,12 +9,8 @@
 	let loggedIn = false;
 	let permissions = 0;
 	let username = '';
-	function validUser(user: User | null): user is User {
-		return !!user;
-	}
 
 	user.subscribe((u) => {
-		console.log(u);
 		if (validUser(u)) {
 			loggedIn = true;
 			permissions = u.permissions;

@@ -1,9 +1,40 @@
 <script lang="ts">
-    import BasketItem from '~/routes/ProdCard.svelte';
-    const items = [
-        {name: "fan 1"},
-        {name: "fan 2"}
-    ]
+	import post from '~/script/web';
+    import { user, validUser } from '~/stores/user_store';
+
+    let loggedIn = false;
+	let permissions = 0;
+	let userName = '';
+    let userId = 0;
+
+
+    user.subscribe((u) => {
+		if (validUser(u)) {
+
+			loggedIn = true;
+
+            post(
+            "fetch_items",
+            {
+                userId: u.User_id
+            },
+            (d) => {
+                items = d.data;
+                console.log(d.data);
+            },
+            (e) => {
+                console.error(e);
+            },
+            "cart"
+        )
+
+		} else {
+			loggedIn = false;
+		}
+	});
+
+    let items: Array<BasketItem> = [] 
+
 </script>
 
 <style>
@@ -23,15 +54,15 @@
 
     {#each items as item}
         <div class="grid grid-cols-6 bob">
-            <div class="col-span-3"><p>{item.name}</p></div>
-            <div><p>5</p></div>
-            <div><p>5</p></div>
-            <div><p>5*5=25</p></div>
+            <div class="col-span-3"><p>{item.product_name}</p></div>
+            <div><p>{item.price}</p></div>
+            <div><p>{item.amount}</p></div>
+            <div><p>{item.price * item.amount}</p></div>
         </div>
     {/each}
     
     <div  class="grid grid-cols-6 bob">
-        <div class="col-start-5 border-2 col-span-2">toto cost: 5*10 = 50</div>
+        <div class="col-start-5 border-2 col-span-2">toto cost: {items.reduce((acc, x) => acc + x.price * x.amount, 0)}</div>
     </div>
 
 </div>

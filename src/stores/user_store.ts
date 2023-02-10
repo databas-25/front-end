@@ -1,5 +1,9 @@
 import { writable, type Writable } from 'svelte/store';
 
+export function validUser(user: User | null): user is User {
+    return !!user;
+}
+
 export type User = {
     User_id: number,
     user_name: string,
