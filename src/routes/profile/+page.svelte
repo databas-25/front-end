@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { disableScrollHandling } from "$app/navigation";
+<<<<<<< Updated upstream
 	import { user, validUser } from "~/stores/user_store";
+=======
+	import { user } from "~/stores/user_store";
+>>>>>>> Stashed changes
 
 
 
@@ -65,8 +69,8 @@
                 <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>changePersInfo=true}>Edit</button>
             {:else}
                 <div class="infoValues text-center fit-content-center col-span-6 grid grid-rows-2">
-                    <input class="infoValueIn" bind:value={profileNameTmp} required/> <!-- fix binding so you might not need it maybe -->
-                    <input class="infoValueIn" bind:value={emailTmp} required/>
+                    <input class="infoValueIn" bind:value={profileNameTmp} placeholder={profileNameTmp} required/> <!-- fix binding so you might not need it maybe -->
+                    <input class="infoValueIn" bind:value={emailTmp} placeholder={emailTmp} required/>
                 </div>
                 <div class=" col-span-6"></div>
                 <button class="buttn bg-green-400 hover:bg-green-700 focus:bg-green-900" on:click={()=>{changePersInfo=false;saveNewPersonalDetails()}}>Save</button>
@@ -76,22 +80,25 @@
     {:else if current_tab==SUB_TABS.ORDER_HISTORY}
         <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit grid grid-cols-4 bg-gray-500">
             <div class="orderNames">
+                <p class=" bg-white">Name</p>
                 <p class="orderName">A jojo</p>
                 <p class="orderName">A doll</p>
                 <p class="orderName">A dvd</p>
             </div>
             <div class="orderIDs">
+                <p class=" bg-white">Order ID</p>
                 <p class="orderID"> 92432</p>
                 <p class="orderID"> 92433</p>
                 <p class="orderID"> 92434</p>
-                
             </div>
             <div class="orderDates">
+                <p class=" bg-white">Date</p>
                 <p class="orderDate">2002</p>
                 <p class="orderDate">2003</p>
                 <p class="orderDate">2006</p>
             </div>
             <div class="orderPrices ">
+                <p class=" bg-white">Price</p>
                 <p class="orderPrice">19 sek</p>
                 <p class="orderPrice">149 sek</p>
                 <p class="orderPrice">98 sek</p>
