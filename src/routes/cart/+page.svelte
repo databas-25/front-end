@@ -26,7 +26,7 @@
                 console.error(e);
             },
             "cart"
-        )
+            )
 
 		} else {
 			loggedIn = false;
