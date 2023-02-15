@@ -20,7 +20,6 @@
             },
             (d) => {
                 items = d.data;
-                console.log(d.data);
             },
             (e) => {
                 console.error(e);
@@ -33,7 +32,7 @@
 		}
 	});
 
-    let items: Array<BasketItem> = [] 
+    let items: Array<BasketItem> = [];
 
 </script>
 

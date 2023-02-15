@@ -16,7 +16,7 @@ declare global {
 		permission: number,
 		email: string,
 	}
-	
+
 	interface Product {
 		Product_id?: number,
 		product_name: string,

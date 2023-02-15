@@ -4,18 +4,16 @@
     import Item from './Item.svelte'
 
 
-    
 	import ProdCard from "./ProdCard.svelte";
 
     let products: Array<Product> = [];
-        
+
     onMount(() =>{
         post(
             "fetch_items",
             {},
             (d) => {
                 products = d.products??[];
-                console.log(d.products??[]);
             },
             (e) => {
                 console.error(e);
@@ -23,10 +21,6 @@
             "product"
             )
         });
-
-    beforeUpdate(() => console.log('before update'));
-    afterUpdate(() => console.log('after update'));
-    onDestroy(() => console.log('destroyed'));
 
     const usID = 10;
     const poID = 1;
