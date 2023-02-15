@@ -9,17 +9,17 @@
     let img:string;
     let link:string;
     let userID:Number;
-    let productID:Number = Math.ceil(Math.random() * 50);
+    let productID:Number;;
 
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
-    export {name, price, img, link};
+    export {name, price, img, link, productID};
 
     
     function addToCart(){
         if (userID !== -1) {
             post(
-                '/addToCart',
+                'add_item',
                 { userID, productID },
                 (d) => {
                     console.log(d);
@@ -28,7 +28,8 @@
                     if (e) {
                         console.error("Err: ", e);
                     }
-                }
+                },
+                "cart"
             )
         } else {
             modalOpen.set({ open: true, type: 1 });
