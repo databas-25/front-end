@@ -1,6 +1,8 @@
 <script lang="ts">
 	import post from "~/script/web";
 	import {onMount, beforeUpdate, afterUpdate, onDestroy} from 'svelte';
+    import Item from './Item.svelte'
+
 
     
 	import ProdCard from "./ProdCard.svelte";
@@ -30,15 +32,30 @@
     const poID = 1;
     let modalOpen = false;
 
-   
+    let categories = [
+        "Golvfläkt",
+        "Bordsfläkt",
+        "Datorfläkt",
+        "Handfläkt",
+        "Solfjäder",
+        "Takfläkt",
+        "Pelarfläkt"
+    ];
+
+    let companies: {[key: string]: Array<string>} = {};
+    for(let category of categories) {
+        companies[category] = ["Borbin", "Stigmon"];    //replace with db stuff
+    }
+
 
 </script>
 
 <div class=" grid grid-cols-5">
-    <div class="filterMenu ">
-        <div class="rounded border-2 bg-gray-500 text-gray-300 border-black justify-evenly h-fit"> <!-- div is for left side menu --> 
-            <p class="menuItem" >Account Details</p>
-            <p class="menuItem">Order History</p>
+    <div class="filterMenu rounded border-2 bg-blue-800 text-gray-300 border-black justify-evenly h-fit">
+        <div class=" w-[95%] items-center"> <!-- div is for left side menu --> 
+            {#each Object.entries(companies) as entry}
+                <Item {entry}/>
+            {/each}
         </div>
     </div>
 
@@ -55,7 +72,12 @@
     </div>
 </div>
 
-<style>
+<style lang="postcss">
+    
+    /*.menuItem{  //not used
+        @apply m-2 border-2 border-white rounded p-2 bg-blue-400 text-black;
+    }*/
+
     .productSection{
         display: flex;
         justify-content: right;
