@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
-	import { user, validUser } from '@stores/user_store';
+	import { loginAttempted, user, validUser } from '@stores/user_store';
 	import { modalOpen } from "~/stores/modal_store";
 	import post from '~/script/web';
 	import { onMount } from "svelte";
@@ -31,6 +31,7 @@
 	let username = '';
 
 	$: {
+
 		if (ACCESS.ADMIN.includes($page.url.pathname)) {
 			hasAccessToPage = state == STATES.AUTHORIZED && permission >= 10
 		} else if (ACCESS.LOGGED_IN.includes($page.url.pathname)) {
@@ -48,18 +49,21 @@
 		}
 	}
 
-	user.subscribe((u) => {
-		if (validUser(u)) {
-			username = u.user_name;
-			permission = u.permission;
-			state = STATES.AUTHORIZED;
-			username = u.user_name;
-		} else {
-			permission = 0;
-			state = STATES.UNAUTHORIZED;
-		}
+	new Promise((resolve) => {
+		loginAttempted.subscribe((l) => {if(l) {resolve(l)}});
+	}).then(() => {
+		user.subscribe((u) => {
+			if (validUser(u)) {
+				username = u.user_name;
+				permission = u.permission;
+				state = STATES.AUTHORIZED;
+			} else {
+				username = '';
+				permission = 0;
+				state = STATES.UNAUTHORIZED;
+			}
+		});
 	});
-
 	const TYPES = {
 		LOGIN: 1,
 		REGISTER: 2,
@@ -79,7 +83,7 @@
 	let authModalOpen = false;
 	let authModalType = TYPES.LOGIN;
 
-	modalOpen.subscribe(({open, type}) => {
+	modalOpen.subscribe(({ open, type }) => {
 		authModalOpen = open;
 		authModalType = type;
 	});
@@ -99,7 +103,7 @@
 
 	function closeMenu() {
 		menuOpen = false;
-		document.removeEventListener('click', closeMenu)
+		document.removeEventListener('click', closeMenu);
 	}
 
 	function submitAuthModal(e: MouseEvent) {
@@ -140,13 +144,11 @@
 				'sign_in',
 				authForm,
 				(d) => {
-					console.log("Sign in success?");
 					authModalOpen = false;
 					user.set(d.user)
 					globalThis.localStorage.setItem('auth_token', d.token);
 				},
 				(e) => {
-					console.log("Sign in failed")
 					authErrorMessage = MESSAGES.LOGIN_FAILED;
 				},
 			)
@@ -154,7 +156,6 @@
 	}
 
 	function submitRegister(e: MouseEvent) {
-		const ip = window.location.hostname;
 		if (validateRegister()) {
 			post(
 				'sign_up',
@@ -190,6 +191,7 @@
 				'token_sign_in',
 				{ token },
 				(d) => {
+					loginAttempted.set(true);
 					user.set(d.user);
 				},
 				() => {
@@ -267,7 +269,6 @@
 	</div>
 	{#if authModalOpen}
 		<Modal on:close={() => modalOpen.set({open: false, type: TYPES.LOGIN})}>
-			
 			<h2 slot="header" class="text-xl">{authModalType == TYPES.LOGIN? 'Login': 'Register'}</h2>
 			<div class="p-2">
 				<p class="mt-2">Username</p>

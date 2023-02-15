@@ -2,16 +2,12 @@
 	import post from "~/script/web";
 	import { user, validUser } from "~/stores/user_store";
 
-
-    let profileName: string;
-    let email: string;
+	let profileName:string;
+	let email:string;
     let profileNameTmp: string;
     let emailTmp: string;
     let userId: number;
     let succ = 0;
-    
-    profileName = "bob";
-    email = "bob@example.bob";
 
     user.subscribe((u) => {
 		if (validUser(u)) {
@@ -23,30 +19,30 @@
     });
 
     let items = [
-        {name: "fläkt", id: 12387, price: 55, date: 2002}, 
-        {name: "flökt", id: 12384, price: 525, date: 2001}, 
+        {name: "fläkt", id: 12387, price: 55, date: 2002},
+        {name: "flökt", id: 12384, price: 525, date: 2001},
         {name: "flåkt", id: 12381, price: 52, date: 2004}
     ];
 
-    const SUB_TABS = {
-        ACCOUNT_DETAILS: 0,
-        ORDER_HISTORY: 1,
-        DELETE_ACCOUNT: 99
-    }
-    let current_tab = SUB_TABS.ACCOUNT_DETAILS;
+	const SUB_TABS = {
+		ACCOUNT_DETAILS: 0,
+		ORDER_HISTORY: 1,
+		DELETE_ACCOUNT: 99
+	}
+	let current_tab = SUB_TABS.ACCOUNT_DETAILS;
 
-    let changePersInfo = false;
+	let changePersInfo = false;
 
     function saveNewPersonalDetails(){
         profileName = profileNameTmp;
         email = emailTmp;
         post(
-            "update", 
+            "update",
             {
-                user: userId, 
-                email: email, 
+                user: userId,
+                email: email,
                 username : profileName
-            }, 
+            },
             (d) => {
                 succ = 1;
                 user.update((u) => {
@@ -56,7 +52,7 @@
                     }
                     return u;
                 });
-            }, 
+            },
             (e) => {
                 succ = 2;
                 console.error(e);

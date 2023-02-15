@@ -2,18 +2,16 @@
 	import post from "~/script/web";
 	import {onMount, beforeUpdate, afterUpdate, onDestroy} from 'svelte';
 
-    
 	import ProdCard from "./ProdCard.svelte";
 
     let products: Array<Product> = [];
-        
+
     onMount(() =>{
         post(
             "fetch_items",
             {},
             (d) => {
                 products = d.products??[];
-                console.log(d.products??[]);
             },
             (e) => {
                 console.error(e);
@@ -22,20 +20,14 @@
             )
         });
 
-    beforeUpdate(() => console.log('before update'));
-    afterUpdate(() => console.log('after update'));
-    onDestroy(() => console.log('destroyed'));
-
     const usID = 10;
     const poID = 1;
     let modalOpen = false;
 
-   
-
 </script>
 
 <style>
-    .productSection{
+    .productSection {
         display: flex;
         justify-content: right;
     }

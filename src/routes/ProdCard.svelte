@@ -15,7 +15,6 @@
 
     export {name, price, img, link, productID};
 
-    
     function addToCart(){
         if (userID !== -1) {
             post(
@@ -40,7 +39,6 @@
     function updateCart(){
         //fetch from database
     }
-    
 </script>
 
 <div class="ProdCard relative z-0 bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
