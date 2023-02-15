@@ -49,6 +49,7 @@
             }, 
             (d) => {
                 succ = 1;
+                setTimeout(() => succ = 0, 5000);
                 user.update((u) => {
                     if(validUser(u)) {
                         u.email = email;
@@ -59,6 +60,7 @@
             }, 
             (e) => {
                 succ = 2;
+                setTimeout(() => succ = 0, 5000);
                 console.error(e);
             }
         )
@@ -74,7 +76,7 @@
 <div class="w-4/5 grid grid-cols-5 m-auto bg-gray-200 p-1 rounded">
     <div class="rounded border-2 bg-gray-500 text-gray-300 border-black justify-evenly h-fit"> <!-- div is for left side menu --> 
         <p class="menuItem {current_tab==SUB_TABS.ACCOUNT_DETAILS? 'text-gray-200 bg-gray-700': ''}" on:click={()=>current_tab=SUB_TABS.ACCOUNT_DETAILS} on:keydown>Account Details</p>
-        <p class="menuItem {current_tab==SUB_TABS.ORDER_HISTORY? 'text-gray-200 bg-gray-700': ''}" on:click={()=>current_tab=SUB_TABS.ORDER_HISTORY} on:keydown>Order History</p>
+        <p class="menuItem {current_tab==SUB_TABS.ORDER_HISTORY? 'text-gray-200 bg-gray-700': ''}" on:click={()=>{current_tab=SUB_TABS.ORDER_HISTORY;succ=0}} on:keydown>Order History</p>
     </div>
     {#if current_tab==SUB_TABS.ACCOUNT_DETAILS}
         <div class="rounded border-2 border-black col-span-4 text-center fit-content-center h-fit grid grid-cols-8 bg-gray-300 ml-4">
@@ -94,12 +96,13 @@
                         <p class=" text-red-600">An error occurred</p>
                     {/if}
                 </div>
-                <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>changePersInfo=true}>Edit</button>
+                <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>{succ=0;changePersInfo=true}}>Edit</button>
             {:else}
                 <div class="infoValues text-center fit-content-center col-span-6 grid grid-rows-2">
                     <input class="infoValueIn" bind:value={profileNameTmp} required/> <!-- fix binding so you might not need it maybe -->
                     <input class="infoValueIn" bind:value={emailTmp} required/>
                 </div>
+                <div class=" col-span-6"></div>
                 <button class="buttn bg-green-400 hover:bg-green-700 focus:bg-green-900" on:click={()=>{changePersInfo=false;saveNewPersonalDetails()}}>Save</button>
                 <button class="buttn bg-red-400 hover:bg-red-700 focus:bg-red-900" on:click={()=>{changePersInfo=false;discardNetPersonalDetails()}}>Cancel</button>
             {/if}
@@ -108,10 +111,10 @@
         <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit bg-gray-500">
 
             <div class="grid grid-cols-4 header">
-                <div><p>Item name</p></div>
-                <div><p>Order ID</p></div>
-                <div><p>Date</p></div>
-                <div><p>Price</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Item name</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Order ID</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Date</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Price</p></div>
             </div>
         
             {#each items as item}
