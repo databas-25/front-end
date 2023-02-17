@@ -7,7 +7,6 @@
 	let userName = '';
     let userId = 0;
 
-
     user.subscribe((u) => {
 		if (validUser(u)) {
 
@@ -59,7 +58,7 @@
             <div><p>{item.price * item.amount}</p></div>
         </div>
     {/each}
-    
+
     <div  class="grid grid-cols-6 bob">
         <div class="col-start-5 border-2 col-span-2">toto cost: {items.reduce((acc, x) => acc + x.price * x.amount, 0)}</div>
     </div>

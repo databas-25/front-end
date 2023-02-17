@@ -13,10 +13,10 @@
         @apply py-2 m-2 border-2 border-white rounded p-2 bg-blue-400 text-black w-full;
     }
 
-	svg { 
+	svg {
         transition: transform 0.2s ease-in;
 	}
-	
+
 	[aria-expanded=true] svg { transform: rotate(0.25turn); }
 
     ul{

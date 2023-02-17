@@ -4,22 +4,20 @@
     import { user } from '@stores/user_store';
     import { modalOpen } from '@stores/modal_store';
 
-    let name:string;
-    let price:string;
-    let img:string;
-    let link:string;
     let userID:Number;
-    let productID:Number;;
 
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
-    export {name, price, img, link, productID};
+    export let product: Product;
 
-    function addToCart(){
+    function addToCart(e: MouseEvent){
+        e.stopPropagation();
+        e.preventDefault();
+        return;
         if (userID !== -1) {
             post(
                 'add_item',
-                { userID, productID },
+                { userID, productID: product.Product_id },
                 (d) => {
                     console.log(d);
                 },
@@ -41,23 +39,24 @@
     }
 </script>
 
-<div class="ProdCard relative z-0 bg-gray-400 m-2 border-2 border-red-600 grid grid-rows-5 aspect-[9/12]">
-    <a href={link}>
-        <div class="thumbnail row-span-4 m-4">
-            <img src={img} alt="Img Err" class="object-scale-down h-full w-full">
-        </div>
-    </a>
-    <div class="absolute bottom-0 left-0 right-0 flex flex-col">
-        <div class="productInfo p-1">
-            <div class="prodName float-left">
-                {name}
-            </div>
-            <div class="prodPrice float-right">
-                {price}
+<a href="/detail/{product.Product_id}">
+    <div class="relative z-0 bg-gray-100 m-2 border-2 border-gray-400 rounded-xl shadow-md grid grid-rows-6 w-72 aspect-[9/12] overflow-clip">
+        <div class="row-span-3 bg-black relative">
+            <img src={product.img_address} alt="Img Err" class="h-full w-full object-scale-down">
+            <div class="absolute rounded top-1 right-2 text-sm px-1 bg-gray-100 shadow-lg shadow-black">
+                {product.price} :-
             </div>
         </div>
-        <button class="h-8 border bg-red-600" on:click={addToCart}>
-            Add
-        </button>
+        <div class="flex justify-between py-1 px-2">
+            <div class="text-xl text-ellipsis whitespace-nowrap">
+                {product.product_name}
+            </div>
+            <div>
+                <div class="border px-3 py-1" on:click={addToCart} on:keydown>
+                    <i class="bi bi-cart-plus"></i>
+                </div>
+            </div>
+        </div>
+        <div class="px-2">{product.description}</div>
     </div>
-</div>
+</a>
