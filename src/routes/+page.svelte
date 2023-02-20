@@ -41,7 +41,7 @@
 
 </script>
 
-<div class=" grid grid-cols-5">
+<div class="grid grid-cols-5">
     <div class="filterMenu rounded-xl border-2 mx-3 shadow-xl text-gray-300 border-black justify-evenly h-fit">
         <div class="text-2xl px-3 py-2 flex justify-between align-baseline text-gray-700">
             <p>Filter</p>
@@ -56,8 +56,7 @@
             {/each}
         </div>
     </div>
-
-    <div class="productSection col-span-4 mr-10">
+    <div class="productSection col-span-4 max-w-full mr-10">
         {#each products as product}
             <ProdCard {product}/>
 	    {/each}
@@ -70,12 +69,7 @@
     }*/
 
     .productSection{
-        display: flex;
-        justify-content: right;
-    }
-
-    .productSection{
-        @apply flex justify-start; /* displays five products per row */
+        @apply flex justify-start flex-wrap; /* displays five products per row */
     }
 
     @media screen and (max-width: 700px){
