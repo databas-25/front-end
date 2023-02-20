@@ -10,12 +10,12 @@ export default function(path: string, data: unknown, success: JQuery.Ajax.Succes
             ip = 'onlyfans_api.beachore.com';
             break;
         default:
-            ip = window.location.hostname ?? 'localhost';
+            ip = (window.location.hostname ?? 'localhost') + ':8000';
             break;
     }
 
     ajax({
-        url: `http://${ip}:8000/${root}/${path}`,
+        url: `http://${ip}/${root}/${path}`,
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
