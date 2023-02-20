@@ -1,5 +1,4 @@
 <script lang="ts">
-    import * as jq from 'jquery';
     import post from '~/script/web';
     import { user } from '@stores/user_store';
     import { modalOpen } from '@stores/modal_store';

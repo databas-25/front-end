@@ -258,7 +258,7 @@
 			</div>
 		</div>
 	</div>
-	<div>
+	<div class="max-w-[1920px] mx-auto py-2">
 		{#if hasAccessToPage}
 			<slot />
 		{:else if state == STATES.AUTHORIZING}

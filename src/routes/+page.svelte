@@ -25,28 +25,33 @@
     const poID = 1;
     let modalOpen = false;
 
-    let categories = [
-        "Golvfläkt",
-        "Bordsfläkt",
-        "Datorfläkt",
-        "Handfläkt",
-        "Solfjäder",
-        "Takfläkt",
-        "Pelarfläkt"
-    ];
-
-    let companies: {[key: string]: Array<string>} = {};
-    for(let category of categories) {
-        companies[category] = ["Borbin", "Stigmon"];    //replace with db stuff
+    let categories = {
+        'Manufacturer': [
+            'Company A',
+            'Company B'
+        ],
+        'Fan type': [
+            'Ceiling fan',
+            'Tower fan',
+            'Floor fan',
+            'Computer fan',
+        ],
     }
 
 </script>
 
 <div class=" grid grid-cols-5">
-    <div class="filterMenu rounded border-2 bg-blue-800 text-gray-300 border-black justify-evenly h-fit">
-        <div class=" w-[95%] items-center"> <!-- div is for left side menu --> 
-            {#each Object.entries(companies) as entry}
-                <Item {entry}/>
+    <div class="filterMenu rounded-xl border-2 mx-3 shadow-xl text-gray-300 border-black justify-evenly h-fit">
+        <div class="text-2xl px-3 py-2 flex justify-between align-baseline text-gray-700">
+            <p>Filter</p>
+            <i class="bi bi-filter"></i>
+        </div>
+        <hr class="border-gray-600"/>
+        <div class="flex flex-col gap-2 py-2"> <!-- div is for left side menu -->
+            {#each Object.entries(categories) as entry}
+                <div class="border-b border-gray-500 last-of-type:border-none">
+                    <Item {entry}/>
+                </div>
             {/each}
         </div>
     </div>
@@ -69,13 +74,12 @@
     }
 
     .productSection{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* displays five products per row */
+        @apply flex justify-start; /* displays five products per row */
     }
 
     @media screen and (max-width: 700px){
         .productSection {
-            grid-template-columns: 1fr 1fr 1fr;
+            @apply grid-cols-3;
         }
     }
 </style>
