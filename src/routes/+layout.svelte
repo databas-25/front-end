@@ -211,7 +211,7 @@
 	let menuOpen = false;
 </script>
 
-<div>
+<div class="max-w-screen overflow-x-hidden">
 	<div class="flex select-none justify-between border-b-2 border-slate-400 p-2 align-baseline">
 		<div class="text-2xl">
 			<a href="/">
