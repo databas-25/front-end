@@ -275,14 +275,14 @@
 		{/if}
 		<a class="h-80 my-2 border-2 rounded max-2xl:hidden relative" href="/">
 			<div class="flex justify-between absolute top-0 w-full text-white bg-gray-600 bg-opacity-50">
-				<p>
+				<p class="relative">
 					<span class="text-red-500 relative">
 						Hot
 						<svg class="absolute top-0 left-0 w-full h-full z-10 stroke-red-500">
 							<line x1="10%" y1="20%" x2="90%" y2="80%"/>
 						</svg>
 					</span>
-					<span class="text-cyan-600">Cool</span> russian girls in your area
+					<span class="absolute text-cyan-600 top-full left-3 bg-black bg-opacity-50 -rotate-12">Cool</span> russian girls in your area
 				</p>
 				<div class="w-6 aspect-square flex justify-center align-baseline text-black bg-gray-300 rounded-lg">
 					<i class="bi bi-x"></i>
