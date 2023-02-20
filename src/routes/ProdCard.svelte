@@ -4,6 +4,7 @@
     import { modalOpen } from '@stores/modal_store';
 
     let userID:Number;
+    const maxChars = 50;
 
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
@@ -46,7 +47,7 @@
             </div>
         </div>
         <div class="flex justify-between py-1 px-2">
-            <div class="text-xl text-ellipsis whitespace-nowrap">
+            <div class="text-xl w-100 text-ellipsis whitespace-nowrap overflow-hidden">
                 {product.product_name}
             </div>
             <div>
@@ -55,6 +56,12 @@
                 </div>
             </div>
         </div>
-        <div class="px-2">{product.description}</div>
+        <div class="px-2">
+            {#if product.description.length < maxChars}
+                {product.description}
+            {:else}
+                {product.description.substring(0, maxChars - 3).trim() + '...'}
+            {/if}
+        </div>
     </div>
 </a>
