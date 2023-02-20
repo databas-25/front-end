@@ -7,15 +7,15 @@ export default function(path: string, data: unknown, success: JQuery.Ajax.Succes
     let ip;
     switch (window.location.hostname) {
         case 'onlyfans.beachore.com':
-            ip = 'onlyfans_api.beachore.com';
+            ip = 'https://onlyfans_api.beachore.com';
             break;
         default:
-            ip = (window.location.hostname ?? 'localhost') + ':8000';
+            ip = `http://${window.location.hostname ?? 'localhost'}:8000`;
             break;
     }
 
     ajax({
-        url: `http://${ip}/${root}/${path}`,
+        url: `${ip}/${root}/${path}`,
         method: 'POST',
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
