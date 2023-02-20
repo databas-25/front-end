@@ -69,7 +69,7 @@
 
 </script>
 
-<div class="w-4/5 grid grid-cols-5 m-auto bg-gray-200 p-1 rounded">
+<div class="w-4/5 grid grid-cols-5 mx-auto h-fit bg-gray-200 p-1 rounded">
     <div class="rounded border-2 bg-gray-500 text-gray-300 border-black justify-evenly h-fit"> <!-- div is for left side menu --> 
         <p class="menuItem {current_tab==SUB_TABS.ACCOUNT_DETAILS? 'text-gray-200 bg-gray-700': ''}" on:click={()=>current_tab=SUB_TABS.ACCOUNT_DETAILS} on:keydown>Account Details</p>
         <p class="menuItem {current_tab==SUB_TABS.ORDER_HISTORY? 'text-gray-200 bg-gray-700': ''}" on:click={()=>{current_tab=SUB_TABS.ORDER_HISTORY;succ=0}} on:keydown>Order History</p>
@@ -112,7 +112,7 @@
                 <div class=" border-2 border-pink-400 rounded-full"><p>Date</p></div>
                 <div class=" border-2 border-pink-400 rounded-full"><p>Price</p></div>
             </div>
-        
+
             {#each items as item}
                 <div class="grid grid-cols-4 entries">
                     <div><p>{item.name}</p></div>
