@@ -13,7 +13,6 @@
     function addToCart(e: MouseEvent){
         e.stopPropagation();
         e.preventDefault();
-        return;
         if (userID !== -1) {
             post(
                 'add_item',

@@ -2,7 +2,7 @@
 	import { slide } from "svelte/transition";
 	export let entry
 	let isOpen = false
-	const toggle = () => isOpen = !isOpen
+	const toggle = () => isOpen = !isOpen;
 </script>
 <style lang="postcss">
 	button {

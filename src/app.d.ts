@@ -28,8 +28,9 @@ declare global {
 	}
 
 	interface BasketItem {
-		Product_id?: number,
+		Products_Product_id?: number,
 		product_name: string,
+		img_address: string,
 		price: number,
 		amount: number,
 	}
