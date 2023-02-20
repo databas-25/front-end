@@ -9,6 +9,7 @@
 	import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
 	import { browser } from "$app/environment";
+	import { add } from "lodash";
 
 	const ACCESS = {
 		ADMIN: [
@@ -29,6 +30,12 @@
 	let hasAccessToPage = true;
 	let permission = 0;
 	let username = '';
+
+	const adds = [
+		'https://i.insider.com/4fd0d4f36bb3f72d61000008?width=600&format=jpeg&auto=webp',
+		'https://myrussianbrides.net/wp-content/uploads/2020/03/russian-woman-for-marriage.jpg',
+		'https://i.insider.com/4fcf84c06bb3f70a06000002?width=600&format=jpeg&auto=webp'
+	]
 
 	$: {
 
@@ -258,7 +265,7 @@
 			</div>
 		</div>
 	</div>
-	<div>
+	<div class="grid grid-cols-[1fr_25rem] mx-auto py-2">
 		{#if hasAccessToPage}
 			<slot />
 		{:else if state == STATES.AUTHORIZING}
@@ -266,6 +273,17 @@
 		{:else if state == STATES.UNAUTHORIZED}
 			<p>Not logged in</p>
 		{/if}
+		<a class="h-80 my-2 border-2 rounded max-2xl:hidden relative" href="/">
+			<div class="flex justify-between absolute top-0 w-full text-white bg-gray-600 bg-opacity-50">
+				<p>
+					Hot russian girls in your area
+				</p>
+				<div class="w-6 aspect-square flex justify-center align-baseline text-black bg-gray-300 rounded-lg">
+					<i class="bi bi-x"></i>
+				</div>
+			</div>
+			<img src={adds[Math.floor(Math.random() * adds.length)]} class="w-full h-full object-scale-down bg-black" alt=""/>
+		</a>
 	</div>
 	{#if authModalOpen}
 		<Modal on:close={() => modalOpen.set({open: false, type: TYPES.LOGIN})}>
