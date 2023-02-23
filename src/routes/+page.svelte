@@ -1,7 +1,7 @@
 <script lang="ts">
 	import post from "~/script/web";
 	import {onMount, beforeUpdate, afterUpdate, onDestroy} from 'svelte';
-    import Item from './Item.svelte'
+    import Item from './Item.svelte';
 
 	import ProdCard from "./ProdCard.svelte";
 	import { not_equal } from "svelte/internal";
@@ -33,6 +33,7 @@
                         Category[product.category] = 1
                 }
 
+                displayed_products = products;
             },
             (e) => {
                 console.error(e);
@@ -59,14 +60,40 @@
         ],
     }
 
-    function filter(){
+    let displayed_products: Array<Product> = [];
 
+
+    function filter(){
+        let man_anyChecked = false;
+        let man_filter: Array<string> = [];
         for(let man of categories.Manufacturer) {
-            console.log(man)
+            if(man.checked){
+                man_anyChecked = true;
+                man_filter.push(man.name)
+            }
         }
+        let typ_anyChecked = false;
+        let typ_filter: Array<string> = [];
         for(let typ of categories['Fan type']) {
-            console.log(typ)
+            if(typ.checked){
+                typ_anyChecked = true;
+                typ_filter.push(typ.name)
+            }
         }
+
+        displayed_products = products
+            .filter((prod) => {
+                if(man_anyChecked){
+                    return man_filter.includes(prod.manufacturer)
+                }
+                return true
+            })
+            .filter((prod) => {
+                if(typ_anyChecked){
+                    return typ_filter.includes(prod.manufacturer)
+                }
+                return true
+            });
 
     }
 
@@ -88,7 +115,7 @@
         </div>
     </div>
     <div class="productSection col-span-4 max-w-full mr-10">
-        {#each products as product}
+        {#each displayed_products as product}
             <ProdCard {product}/>
 	    {/each}
     </div>
