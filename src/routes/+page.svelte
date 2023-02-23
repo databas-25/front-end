@@ -105,7 +105,8 @@
             })
             .filter((prod) => {
                 if(typ_anyChecked){
-                    return typ_filter.includes(prod.manufacturer)
+                    prod.category ??= 'Uncategorized';
+                    return typ_filter.includes(prod.category)
                 }
                 return true
             });
