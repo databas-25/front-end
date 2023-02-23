@@ -3,6 +3,7 @@
 	export let entry: [string, {name: string, checked: boolean, amount: number}[]]
 	let isOpen = false
 	const toggle = () => isOpen = !isOpen;
+	export let onChange = () => {};
 </script>
 
 <style lang="postcss">
@@ -47,7 +48,7 @@
         <ul transition:slide={{ duration: 300 }}>
             {#each entry[1] as item}
                 <li class="flex gap-2 select-none">
-                    <input type="checkbox" id="filter_{item.name}" bind:checked={item.checked} class="outline-none cursor-pointer w-5"/>
+                    <input type="checkbox" id="filter_{item.name}" bind:checked={item.checked} on:change={onChange} class="outline-none cursor-pointer w-5"/>
                     <label for="filter_{item.name}" class="w-full flex justify-between pr-4 cursor-pointer">
                         {item.name}
                         <span class="flex flex-col justify-center">

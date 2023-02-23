@@ -43,6 +43,7 @@
 		"@types/lodash": "^4.14.191",
 		"bootstrap-icons": "^1.10.3",
 		"jquery": "^3.6.3",
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"svelte-select": "^5.3.1"
 	}
 }

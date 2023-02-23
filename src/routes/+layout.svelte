@@ -265,7 +265,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="grid grid-cols-[1fr_25rem] mx-auto py-2">
+	<div class="grid grid-cols-[1fr_25rem] max-2xl:grid-cols-1 mx-auto py-2">
 		{#if hasAccessToPage}
 			<slot />
 		{:else if state == STATES.AUTHORIZING}

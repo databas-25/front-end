@@ -73,10 +73,7 @@
         'Fan type': [],
     }
 
-    
-
     let displayed_products: Array<Product> = [];
-
 
     function filter(){
         let man_anyChecked = false;
@@ -125,7 +122,7 @@
         <div class="flex flex-col gap-2 py-2"> <!-- div is for left side menu -->
             {#each Object.entries(categories) as entry}
                 <div class="border-b border-gray-500 last-of-type:border-none">
-                    <Item {entry}/>
+                    <Item {entry} onChange={filter}/>
                 </div>
             {/each}
         </div>

@@ -1,12 +1,32 @@
 
 <script lang="ts">
-    export const def: Product = {
+    import Select from 'svelte-select';
+
+    export let def: Product = {
         product_name: '',
         manufacturer: '',
         img_address: '',
         price: 0,
         description: '',
+        category: '',
     }
+
+    const manufacturers = [
+        'Matzuus Fans AB',
+        'Fany fans',
+        'Biltema',
+        'Bosch',
+        'Cool Products Inc'
+    ]
+
+    const categories = [
+        'Ceiling fan',
+        'Table fan',
+        'Tower fan',
+    ]
+
+    let select_man: any = (man: { detail: { value: string }}) => { def.manufacturer = man.detail.value };
+    let select_cat: any = (cat: { detail: { value: string }}) => { def.category = cat.detail.value };
 
     export let onSubmit = (product: Product) => { console.log(product) }
 </script>
@@ -18,7 +38,11 @@
     </div>
     <div>
         <p>Manufacturer</p>
-        <input type="text" class="input-text" bind:value={def.manufacturer}/>
+        <Select items={manufacturers} value={def.manufacturer} on:change={select_man} label='value'/>
+    </div>
+    <div>
+        <p>Category</p>
+        <Select items={categories} value={def.category} on:change={select_cat} label='value'/>
     </div>
     <div>
         <p>Image url</p>

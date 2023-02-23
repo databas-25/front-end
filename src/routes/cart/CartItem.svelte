@@ -51,7 +51,7 @@
                 <p class="h-fit w-full text-center">-</p>
             </div>
             <div class="flex flex-col justify-center w-12">
-                <input type="number" class="hide-button-control h-fit border-b-2 border-stone-300 px-2 outline-none bg-transparent focus:border-black whitespace-nowrap text-right overflow-hidden" inputmode="decimal" maxlength="3" bind:value={item.amount} on:blur={() => editItemAmount(0)} />
+                <input type="number" class="hide-button-control h-fit border-b-2 border-stone-300 px-2 outline-none bg-transparent focus:border-black whitespace-nowrap text-right overflow-hidden" bind:value={item.amount} on:blur={() => editItemAmount(0)} />
             </div>
             <div class="w-8 border border-gray-600 rounded-full aspect-square flex flex-col justify-center select-none hover:bg-black hover:bg-opacity-10 cursor-pointer" on:click={() => editItemAmount(1)} on:keydown>
                 <p class="h-fit w-full text-center">+</p>
@@ -66,5 +66,9 @@
     .hide-button-control::-webkit-outer-spin-button {
         @apply appearance-none;
         margin: 0;
+    }
+    
+    .hide-button-control {
+        -moz-appearance: textfield;
     }
 </style>

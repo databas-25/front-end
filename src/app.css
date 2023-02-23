@@ -8,3 +8,11 @@
 .input-text {
     @apply border border-gray-300 p-2 rounded w-full;
 }
+
+.input-dropdown {
+    @apply border border-gray-300 p-2 rounded w-full;
+}
+
+.input-dropdown option {
+    @apply bg-white bg-opacity-100;
+}

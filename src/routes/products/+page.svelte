@@ -1,6 +1,8 @@
 <script lang="ts">
     import ProductForm from './product_form.svelte';
     import post from '~/script/web';
+	import { onMount } from 'svelte';
+	import ProductRow from './product_row.svelte';
 
     const TABS = {
         CREATE: 0,
@@ -8,7 +10,6 @@
     }
 
     function createProduct(product: Product) {
-        console.log("CREATE PRODUCT");
         post(
             'create',
             product,
@@ -20,6 +21,40 @@
             },
             'product',
         )
+    }
+    let products: Array<Product> = [];
+    onMount(() => {
+        post(
+            "fetch_items",
+            {},
+            (d) => {
+                products = d.products??[];
+            },
+            (e) => {
+                console.error(e);
+            },
+            "product"
+        )
+    });
+
+    let selected_product: Product | null;
+    function select(product: Product) {
+        selected_product = product;
+    }
+
+    function updateProduct(product: Product) {
+        console.log(product);
+        // post(
+        //     "update_product",
+        //     { product },
+        //     (d) => {
+        //         console.log(d);
+        //     },
+        //     (e) => {
+        //         console.error(e);
+        //     },
+        //     "product"
+        // )
     }
 
     let selected = TABS.CREATE;
@@ -36,9 +71,21 @@
             <hr />
             <ProductForm onSubmit={createProduct} />
         {:else if selected == TABS.EDIT}
-            <p class="text-2xl">EDIT PRODUCT</p>
+            <p class="text-2xl">
+                {#if selected_product}
+                     <i class="bi bi-chevron-left hover:text-gray-600 cursor-pointer" on:click={() => selected_product = null} on:keydown></i>
+                {/if}
+                <span>EDIT PRODUCT</span>
+            </p>
             <hr />
-            <ProductForm />
+            {#if selected_product}
+                <ProductForm def={selected_product} onSubmit={updateProduct}/>
+            {:else}
+                {#each products as product}
+                    <ProductRow item={product} onSelect={() => select(product)}/>
+                    <hr class="border-gray-600 last-of-type:hidden"/>
+                {/each}
+            {/if}
         {/if}
     </div>
 </div>
