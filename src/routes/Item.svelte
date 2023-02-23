@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from "svelte/transition";
-	export let entry: [String, string[]]
+	export let entry: [string, {name: string, checked: boolean}[]]
 	let isOpen = false
 	const toggle = () => isOpen = !isOpen;
 </script>
@@ -47,9 +47,9 @@
         <ul transition:slide={{ duration: 300 }}>
             {#each entry[1] as item}
                 <li class="flex gap-2 select-none">
-                    <input type="checkbox" id="filter_{item}" class="outline-none cursor-pointer w-5"/>
-                    <label for="filter_{item}" class="w-full flex justify-between pr-4 cursor-pointer">
-                        {item}
+                    <input type="checkbox" id="filter_{item.name}" bind:checked={item.checked} class="outline-none cursor-pointer w-5"/>
+                    <label for="filter_{item.name}" class="w-full flex justify-between pr-4 cursor-pointer">
+                        {item.name}
                         <span class="flex flex-col justify-center">
                             <span class="bg-gray-300 rounded-lg px-1 text-sm">256</span>
                         </span>

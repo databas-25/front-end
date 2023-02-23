@@ -28,15 +28,26 @@
 
     let categories = {
         'Manufacturer': [
-            'Company A',
-            'Company B'
+            {name: 'Company A', checked: false},
+            {name: 'Company B', checked: false}
         ],
         'Fan type': [
-            'Ceiling fan',
-            'Tower fan',
-            'Floor fan',
-            'Computer fan',
+            {name: 'Ceiling fan', checked: false},
+            {name: 'Tower fan', checked: false},
+            {name: 'Floor fan', checked: false},
+            {name: 'Computer fan', checked: false}
         ],
+    }
+
+    function filter(){
+        man_anyChecked = False;
+        for(let man of categories.Manufacturer) {
+            console.log(man)
+        }
+        for(let typ of categories['Fan type']) {
+            console.log(typ)
+        }
+
     }
 
 </script>
@@ -45,7 +56,7 @@
     <div class="filterMenu rounded-xl border-2 mx-3 shadow-xl text-gray-300 border-black justify-evenly h-fit">
         <div class="text-2xl px-3 py-2 flex justify-between align-baseline text-gray-700">
             <p>Filter</p>
-            <i class="bi bi-filter"></i>
+            <i class="bi bi-filter" on:click={filter} on:keydown></i>
         </div>
         <hr class="border-gray-600"/>
         <div class="flex flex-col gap-2 py-2"> <!-- div is for left side menu -->
