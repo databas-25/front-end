@@ -4,8 +4,12 @@
     import Item from './Item.svelte'
 
 	import ProdCard from "./ProdCard.svelte";
+	import { not_equal } from "svelte/internal";
+	import { isNull } from "lodash";
 
     let products: Array<Product> = [];
+    let Manufacturers: Record<string,number> = {};
+    let Category: Record<string,number> = {};
 
     onMount(() =>{
         post(
@@ -13,6 +17,22 @@
             {},
             (d) => {
                 products = d.products??[];
+
+
+                for (let product of products) {
+                    product.category ??= 'Uncategorized';
+                    
+                    if(product.manufacturer in Manufacturers && (product.manufacturer ?? false))
+                        Manufacturers[product.manufacturer]++;
+                    else
+                        Manufacturers[product.manufacturer] = 1
+
+                    if(product.category in Category && (product.category ?? false))
+                        Category[product.category]++;
+                    else
+                        Category[product.category] = 1
+                }
+
             },
             (e) => {
                 console.error(e);
@@ -28,19 +48,19 @@
 
     let categories = {
         'Manufacturer': [
-            {name: 'Company A', checked: false},
-            {name: 'Company B', checked: false}
+            {name: 'Company A', checked: false, amount: 5},
+            {name: 'Company V', checked: false, amount: 5},
         ],
         'Fan type': [
-            {name: 'Ceiling fan', checked: false},
-            {name: 'Tower fan', checked: false},
-            {name: 'Floor fan', checked: false},
-            {name: 'Computer fan', checked: false}
+            {name: 'Ceiling fan', checked: false, amount: 5},
+            {name: 'Tower fan', checked: false, amount: 5},
+            {name: 'Floor fan', checked: false, amount: 5},
+            {name: 'Computer fan', checked: false, amount: 5}
         ],
     }
 
     function filter(){
-        man_anyChecked = False;
+
         for(let man of categories.Manufacturer) {
             console.log(man)
         }
