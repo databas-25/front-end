@@ -6,10 +6,11 @@
 	import ProdCard from "./ProdCard.svelte";
 	import { not_equal } from "svelte/internal";
 	import { isNull } from "lodash";
+	import { each } from "jquery";
 
     let products: Array<Product> = [];
-    let Manufacturers: Record<string,number> = {};
-    let Category: Record<string,number> = {};
+    // let Manufacturers: Record<string,number> = {};
+    // let Category: Record<string,number> = {};
 
     onMount(() =>{
         post(
@@ -21,16 +22,25 @@
 
                 for (let product of products) {
                     product.category ??= 'Uncategorized';
-                    
-                    if(product.manufacturer in Manufacturers && (product.manufacturer ?? false))
-                        Manufacturers[product.manufacturer]++;
+                    let man = categories.Manufacturer.find((m) => m.name == product.manufacturer)
+                    if(man)
+                        man.amount++;
                     else
-                        Manufacturers[product.manufacturer] = 1
+                        categories.Manufacturer.push({
+                            name: product.manufacturer,
+                            checked: false,
+                            amount: 1,
+                        });
 
-                    if(product.category in Category && (product.category ?? false))
-                        Category[product.category]++;
+                    let typ = categories['Fan type'].find((m) => m.name == product.category)
+                    if(typ)
+                        typ.amount++;
                     else
-                        Category[product.category] = 1
+                        categories['Fan type'].push({
+                            name: product.category,
+                            checked: false,
+                            amount: 1,
+                        });
                 }
 
                 displayed_products = products;
@@ -47,18 +57,23 @@
     const poID = 1;
     let modalOpen = false;
 
-    let categories = {
-        'Manufacturer': [
-            {name: 'Company A', checked: false, amount: 5},
-            {name: 'Company V', checked: false, amount: 5},
-        ],
-        'Fan type': [
-            {name: 'Ceiling fan', checked: false, amount: 5},
-            {name: 'Tower fan', checked: false, amount: 5},
-            {name: 'Floor fan', checked: false, amount: 5},
-            {name: 'Computer fan', checked: false, amount: 5}
-        ],
+    let categories: {
+        'Manufacturer': Array<{
+            name: string,
+            checked: boolean,
+            amount: number,
+        }>,
+        'Fan type': Array<{
+            name: string,
+            checked: boolean,
+            amount: number,
+        }>,
+    } = {
+        'Manufacturer': [],
+        'Fan type': [],
     }
+
+    
 
     let displayed_products: Array<Product> = [];
 

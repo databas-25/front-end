@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from "svelte/transition";
-	export let entry: [string, {name: string, checked: boolean}[]]
+	export let entry: [string, {name: string, checked: boolean, amount: number}[]]
 	let isOpen = false
 	const toggle = () => isOpen = !isOpen;
 </script>
@@ -51,7 +51,7 @@
                     <label for="filter_{item.name}" class="w-full flex justify-between pr-4 cursor-pointer">
                         {item.name}
                         <span class="flex flex-col justify-center">
-                            <span class="bg-gray-300 rounded-lg px-1 text-sm">256</span>
+                            <span class="bg-gray-300 rounded-lg px-1 text-sm">{item.amount}</span>
                         </span>
                     </label>
                 </li>
