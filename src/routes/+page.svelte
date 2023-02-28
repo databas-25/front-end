@@ -17,8 +17,7 @@
             "fetch_items",
             {},
             (d) => {
-                products = d.products??[];
-
+                products = d.products ?? [];
 
                 for (let product of products) {
                     product.category ??= 'Uncategorized';

@@ -21,7 +21,7 @@
             () => {
                 console.error('Failed to update basket item amount');
             },
-            'product'
+            'cart'
         );
     }, 400);
 
@@ -30,13 +30,16 @@
         if (item.amount < 0) {
             item.amount = 0;
         }
+
         if (item.amount > 999) {
             item.amount = 999;
         }
+
         sendUpdate();
         onUpdate();
     }
 </script>
+
 <div class="grid grid-cols-10 bob p-2">
     <div class="col-span-7 px-2 flex">
         <img src={item.img_address} class="h-12 object-scale-down" alt="j"/>
@@ -67,7 +70,7 @@
         @apply appearance-none;
         margin: 0;
     }
-    
+
     .hide-button-control {
         -moz-appearance: textfield;
     }

@@ -4,31 +4,27 @@
 	import CartItem from './CartItem.svelte';
 
     let loggedIn = false;
-	let permissions = 0;
-	let userName = '';
     let userId = 0;
-    let amount = "";
 
     user.subscribe((u) => {
 		if (validUser(u)) {
-
+            userId = u.User_id;
 			loggedIn = true;
 
             post(
-            "fetch_items",
-            {
-                userId: u.User_id
-            },
-            (d) => {
-                items = d.data;
-                onUpdate();
-            },
-            (e) => {
-                console.error(e);
-            },
-            "cart"
+                "fetch_items",
+                {
+                    userId
+                },
+                (d) => {
+                    items = d.data;
+                    onUpdate();
+                },
+                (e) => {
+                    console.error(e);
+                },
+                "cart"
             )
-
 		} else {
 			loggedIn = false;
 		}
@@ -42,12 +38,6 @@
     }
 
 </script>
-
-<!-- <style class="scss">
-    .bob:nth-of-type(even){
-        background-color: rgba(86, 59, 7, 0.119);
-    }
-</style> -->
 
 <div class="my-2 w-3/4 text-black m-auto">
 
@@ -67,4 +57,8 @@
     <div  class="grid grid-cols-12 bob p-2">
         <div class="col-start-11 col-span-2">Sum: {sum}</div>
     </div>
+
+    <a href="/checkout" class="float-right bg-blue-500 rounded text-white px-4 py-2">
+        <span>To checkout</span>
+    </a>
 </div>
