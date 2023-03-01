@@ -33,7 +33,7 @@
 
     function removeItem(){
         post(
-            'clearItem', 
+            'clearItem',
             {
                 userID,
                 productID: item.Products_Product_id

@@ -1,8 +1,6 @@
-import { ajax } from 'jquery';
-
 type roots = 'user' | 'cart' | 'order' | 'product' | 'review';
 
-export default function(path: string, data: unknown, success: JQuery.Ajax.SuccessCallback<unknown>, error: JQuery.Ajax.ErrorCallback<unknown>, root: roots = 'user') {
+export default function(path: string, data: unknown, success: (arg: any) => void, error: (arg: any) => void, root: roots = 'user') {
     let ip;
     switch (window.location.hostname) {
         case 'onlyfans.beachore.com':
@@ -13,13 +11,14 @@ export default function(path: string, data: unknown, success: JQuery.Ajax.Succes
             break;
     }
 
-    ajax({
-        url: `${ip}/${root}/${path}`,
+    fetch(`${ip}/${root}/${path}`, {
         method: 'POST',
-        dataType: 'json',
-        contentType: 'application/json; charset=UTF-8',
-        data: JSON.stringify(data),
-        success,
-        error,
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(data),
     })
+        .then(d => d.json())
+        .then(success)
+        .catch(error);
 }
