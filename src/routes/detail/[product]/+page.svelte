@@ -12,17 +12,6 @@
     let userID: number;
 
     let reviews: Array<Review> = [];
-    reviews.push(
-        {   
-            userID: 0,
-            title: "good product",
-            body: "verry descriptive description, verry descriptive description, verry descriptive description, verry descriptive description, verry descriptive description ",
-            name: "bob",
-            rating: 5,
-            reviewTime: new Date(),
-        }
-    )
-        
 
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
@@ -31,7 +20,6 @@
             'getForProduct',
             {productID: prodID },
             (d) => {
-                console.log(d);
                 reviews = d.reviews??[]
             },
             (e) => {
@@ -73,7 +61,7 @@
             'post',
             { userID, productID: prodID, rating: selected, body, title },
             (d) => {
-                console.log(d);
+                window.location.reload();
             },
             (e) => {
                 if (e) {
@@ -83,43 +71,33 @@
             'review'
         );
     }
-
-
 </script>
-
 
 <div>
     <ItemCard {prodID}/>
 
-    {#if !(reviews.find((r) => {r.userID == userID}) || userID == -1)}
+    {#if !(reviews.some((r) => r.User_id == userID) || userID == -1)}
 
-    <div class="m-auto w-[30rem] mt-5 bg-gray-50 p-1">
-        <input class="border w-full mt-5" type="text" name="" id="" placeholder="Title" bind:value={title}/>
-        <textarea class="border w-full mt-5" name="" id="" placeholder="Body" bind:value={body}/>
-        <div class="flex justify-between mt-5">
-            <div class="flex">
-                {#each [1,2,3,4,5] as i}
-                    <i class="bi {get_classes(i)}" on:click={()=>{selected = i}} on:mouseover={()=>{hover = i}} on:mouseleave={()=>{hover = 0}} on:keydown on:focus/>
-                    
-                {/each}
-
+        <div class="m-auto w-[30rem] mt-5 bg-gray-50 p-1">
+            <input class="border w-full mt-5" type="text" name="" id="" placeholder="Title" bind:value={title}/>
+            <textarea class="border w-full mt-5" name="" id="" placeholder="Body" bind:value={body}/>
+            <div class="flex justify-between mt-5">
+                <div class="flex">
+                    {#each [1,2,3,4,5] as i}
+                        <i class="bi {get_classes(i)}" on:click={()=>{selected = i}} on:mouseover={()=>{hover = i}} on:mouseleave={()=>{hover = 0}} on:keydown on:focus/>
+                    {/each}
+                </div>
+                <button class=" border w-1/4" type="submit" on:click={create_review}>Submit</button>
             </div>
-            <button class=" border w-1/4" type="submit" on:click={create_review}>Submit</button>
         </div>
-    </div>
 
     {/if}
-    
-    <div class="m-auto w-[30rem] mt-5">
+    <div class="m-auto w-[30rem] mt-5 flex flex-col gap-5">
         {#each reviews as review}
-            <Review_ {review}/>  
+            <Review_ {review}/>
         {/each}
     </div>
 </div>
-
-
-
-
 
 <style lang="postcss">
 

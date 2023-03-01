@@ -37,10 +37,10 @@ declare global {
 	}
 
 	interface Review {
-		userID: number,
+		User_id: number,
         title: string,
         body: string,
-        name: string,
+        user_name: string,
         rating: number,
 		reviewTime: Date,
     }
