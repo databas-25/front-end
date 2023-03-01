@@ -49,8 +49,8 @@
 
     function editItemAmount(change: number) {
         item.amount += change;
-        if (item.amount < 0) {
-            item.amount = 0;
+        if (item.amount < 1) {
+            item.amount = 1;
         }
 
         if (item.amount > 999) {
