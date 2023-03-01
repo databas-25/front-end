@@ -1,7 +1,7 @@
 import { ajax } from 'jquery';
 import { page } from '$app/stores';
 
-type roots = 'user' | 'cart' | 'order' | 'product';
+type roots = 'user' | 'cart' | 'order' | 'product' | 'review';
 
 export default function(path: string, data: unknown, success: JQuery.Ajax.SuccessCallback<unknown>, error: JQuery.Ajax.ErrorCallback<unknown>, root: roots = 'user') {
     let ip;
