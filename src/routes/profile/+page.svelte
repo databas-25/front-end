@@ -1,6 +1,7 @@
 <script lang="ts">
 	import post from "~/script/web";
-	import { user, validUser } from "~/stores/user_store";
+	import { loginAttempted, user, validUser } from "~/stores/user_store";
+	import Item from "../Item.svelte";
 
 	let profileName:string;
 	let email:string;
@@ -8,6 +9,7 @@
     let emailTmp: string;
     let userId: number;
     let succ = 0;
+    let items: Array<OrderedItem> = [];
 
     user.subscribe((u) => {
 		if (validUser(u)) {
@@ -15,14 +17,40 @@
 			email = u.email;
             profileNameTmp = profileName;
             emailTmp = email;
+            userId = u.User_id;
+            
+            let itemsTmp: Array<{
+                Order_id: number,
+                timestamp: Date,
+                Products_Product_id: number,
+                amount: number
+
+            }> = [];
+
+            post(
+                "getHistory",
+                {
+                    userID: userId
+                },
+                (d) => {
+                    console.log("here");
+                    console.log(d.result);
+                    items = d.result??[];
+                    items.forEach(i => {
+                        i.timestamp = new Date(i.timestamp);
+                    });
+                    console.log("items", items);
+                },
+                (e) => {
+                    console.error(e);
+                },
+                "order"
+            );
+
+            
 		}
     });
 
-    let items = [
-        {name: "fläkt", id: 12387, price: 55, date: 2002},
-        {name: "flökt", id: 12384, price: 525, date: 2001},
-        {name: "flåkt", id: 12381, price: 52, date: 2004}
-    ];
 
 	const SUB_TABS = {
 		ACCOUNT_DETAILS: 0,
@@ -106,27 +134,31 @@
     {:else if current_tab==SUB_TABS.ORDER_HISTORY}
         <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit bg-gray-500">
 
-            <div class="grid grid-cols-4 header">
-                <div class=" border-2 border-pink-400 rounded-full"><p>Item name</p></div>
+            <div class="grid grid-cols-6 header">
                 <div class=" border-2 border-pink-400 rounded-full"><p>Order ID</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Item name</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Product ID</p></div>
+                <div class=" border-2 border-pink-400 rounded-full"><p>Amount</p></div>
                 <div class=" border-2 border-pink-400 rounded-full"><p>Date</p></div>
                 <div class=" border-2 border-pink-400 rounded-full"><p>Price</p></div>
             </div>
 
             {#each items as item}
-                <div class="grid grid-cols-4 entries">
-                    <div><p>{item.name}</p></div>
-                    <div><p>{item.id}</p></div>
-                    <div><p>{item.date}</p></div>
+                <div class="grid grid-cols-6 entries">
+                    <div><p>{item.Order_Order_id}</p></div>
+                    <div><p>{item.product_name}</p></div>
+                    <div><p>{item.Products_Product_id}</p></div>
+                    <div><p>{item.amount}</p></div>
+                    <div><p>{item.timestamp.toJSON()?.slice(0,10)?.replace(/-/g,'/')}</p></div>
                     <div><p>{item.price}</p></div>
                 </div>
             {/each}
-
         </div>
     {:else}
         <div>
             <p>This is the else case</p>
-            <p>You shouldn't be here</p>
+            <p>You shouldn't be here</p>package-lock.json
+            modified:   package.json
         </div>
     {/if}
 </div>

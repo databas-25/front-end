@@ -35,6 +35,15 @@ declare global {
 		price: number,
 		amount: number,
 	}
+
+	interface OrderedItem {
+		Order_Order_id?: number,
+		timestamp: Date,
+		Products_Product_id?: number,
+		amount: number, 
+		product_name: string,
+		price: number,
+	}
 }
 
 
