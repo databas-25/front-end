@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "../app.css";
 	import Modal from '@components/Modal.svelte';
-	import { loginAttempted, user, validUser } from '@stores/user_store';
+	import { loginAttempted, updateCartAmount, user, validUser, cartAmount as cartAmountStore } from '@stores/user_store';
 	import { modalOpen } from "~/stores/modal_store";
 	import post from '~/script/web';
 	import { onMount } from "svelte";
@@ -30,6 +30,12 @@
 	let hasAccessToPage = true;
 	let permission = 0;
 	let username = '';
+	let cartAmount = 0;
+	cartAmountStore.subscribe(a => {
+		if (a) {
+			cartAmount = a;
+		}
+	});
 
 	const adds = [
 		'https://i.insider.com/4fd0d4f36bb3f72d61000008?width=600&format=jpeg&auto=webp',
@@ -64,6 +70,7 @@
 				username = u.user_name;
 				permission = u.permission;
 				state = STATES.AUTHORIZED;
+				updateCartAmount();
 			} else {
 				username = '';
 				permission = 0;
@@ -228,6 +235,11 @@
 						<span class="leading-[26px]"></span>
 						<i class="bi bi-list-task text-xl leading-7"></i>
 					</div>
+					{#if cartAmount > 0}
+						 <p class="absolute rounded-full pointer-events-none text-sm bg-red-600 text-white -right-2 -bottom-1 px-2">
+							 {cartAmount < 10? cartAmount : '9+'}
+						 </p>
+					{/if}
 				</div>
 				<div class="{menuOpen? '': 'invisible'} absolute z-10 right-0 w-60 overflow-clip rounded-lg border-2 border-slate-400 bg-white group-hover:visible cursor-pointer">
 					{#if permission >= 10}

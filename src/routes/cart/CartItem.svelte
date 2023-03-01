@@ -1,7 +1,7 @@
 <script lang="ts">
     import _ from 'lodash';
     import post from '~/script/web';
-    import { user } from '~/stores/user_store';
+    import { updateCartAmount, user } from '~/stores/user_store';
 
     let userID = -1;
     user.subscribe((u) => userID = u?.User_id ?? -1);
@@ -17,7 +17,9 @@
                 userID,
                 amount: item.amount,
             },
-            () => {},
+            () => {
+                updateCartAmount();
+            },
             () => {
                 console.error('Failed to update basket item amount');
             },
