@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { user } from '@stores/user_store';
+    import { updateCartAmount, user } from '@stores/user_store';
 	import { onMount } from 'svelte';
     import post from "~/script/web";
     import { modalOpen } from '@stores/modal_store';
@@ -43,8 +43,8 @@
             post(
                 'add_item',
                 { userID, productID: product.Product_id },
-                (d) => {
-                    console.log(d);
+                () => {
+                    updateCartAmount();
                 },
                 (e) => {
                     if (e) {
