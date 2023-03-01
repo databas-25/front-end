@@ -48,9 +48,8 @@
                 console.error(e);
             },
             "product"
-            )
-        }
-    );
+        );
+    });
 
     const usID = 10;
     const poID = 1;

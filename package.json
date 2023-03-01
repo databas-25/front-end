@@ -41,6 +41,8 @@
 	"type": "module",
 	"dependencies": {
 		"@types/lodash": "^4.14.191",
+		"blessed": "^0.1.81",
+		"blessed-contrib": "^4.11.0",
 		"bootstrap-icons": "^1.10.3",
 		"jquery": "^3.6.3",
 		"lodash": "^4.17.21",

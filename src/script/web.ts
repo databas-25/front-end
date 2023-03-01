@@ -1,5 +1,4 @@
 import { ajax } from 'jquery';
-import { page } from '$app/stores';
 
 type roots = 'user' | 'cart' | 'order' | 'product' | 'review';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import post from '~/script/web';
-    import { user } from '@stores/user_store';
+    import { updateCartAmount, user } from '@stores/user_store';
     import { modalOpen } from '@stores/modal_store';
 
     let userID:Number;
@@ -17,8 +17,8 @@
             post(
                 'add_item',
                 { userID, productID: product.Product_id },
-                (d) => {
-                    console.log(d);
+                () => {
+                    updateCartAmount()
                 },
                 (e) => {
                     if (e) {
@@ -51,9 +51,9 @@
                 {product.product_name}
             </div>
             <div>
-                <div class="border px-3 py-1" on:click={addToCart} on:keydown>
+                <button class="border px-3 py-1 hover:bg-gray-200 rounded" on:click={addToCart} on:keydown>
                     <i class="bi bi-cart-plus"></i>
-                </div>
+                </button>
             </div>
         </div>
         <div class="px-2">
