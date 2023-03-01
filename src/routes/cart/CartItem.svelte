@@ -25,6 +25,26 @@
         );
     }, 400);
 
+    const reload = _.debounce(() => {
+            window.location.reload();
+        }, 100);
+
+    function removeItem(){
+        post(
+            'clearItem', 
+            {
+                userID,
+                productID: item.Products_Product_id
+            },
+            () => {},
+            () => {
+                console.error('Failed to remove item from basket');
+            },
+            'cart'
+        );
+        reload();
+    }
+
     function editItemAmount(change: number) {
         item.amount += change;
         if (item.amount < 0) {
@@ -40,7 +60,7 @@
     }
 </script>
 
-<div class="grid grid-cols-10 bob p-2">
+<div class="grid grid-cols-11 bob p-2">
     <div class="col-span-7 px-2 flex">
         <img src={item.img_address} class="h-12 object-scale-down" alt="j"/>
         <div class="flex flex-col justify-center px-3">
@@ -62,6 +82,9 @@
         </div>
     </div>
     <div class="text-center flex flex-col justify-center"><p>{item.price * item.amount} kr</p></div>
+    <div class="text-center">
+        <i class="bi bi-trash text-red-600 hover:text-red-800 cursor-pointer text-2xl" on:click={removeItem} on:keydown></i>
+    </div>
 </div>
 
 <style>

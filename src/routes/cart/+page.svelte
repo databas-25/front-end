@@ -41,7 +41,7 @@
 
 <div class="my-2 w-3/4 text-black m-auto">
 
-    <div class="grid grid-cols-10 text-lg">
+    <div class="grid grid-cols-11 text-lg">
         <div class="col-span-7">Item name</div>
         <div class="text-center">Unit price</div>
         <div class="text-center">Amount</div>
