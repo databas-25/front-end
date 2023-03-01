@@ -33,7 +33,7 @@
 
     function removeItem(){
         post(
-            'clearItem', 
+            'clearItem',
             {
                 userID,
                 productID: item.Products_Product_id
@@ -49,8 +49,8 @@
 
     function editItemAmount(change: number) {
         item.amount += change;
-        if (item.amount < 0) {
-            item.amount = 0;
+        if (item.amount < 1) {
+            item.amount = 1;
         }
 
         if (item.amount > 999) {
@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="text-center flex flex-col justify-center"><p>{item.price * item.amount} kr</p></div>
-    <div class="text-center">
+    <div class="text-center flex flex-col justify-center">
         <i class="bi bi-trash text-red-600 hover:text-red-800 cursor-pointer text-2xl" on:click={removeItem} on:keydown></i>
     </div>
 </div>

@@ -44,6 +44,15 @@ declare global {
 		product_name: string,
 		price: number,
 	}
+	
+	interface Review {
+		User_id: number,
+        title: string,
+        body: string,
+        user_name: string,
+        rating: number,
+		reviewTime: Date,
+    }
 }
 
 
