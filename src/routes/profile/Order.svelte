@@ -9,7 +9,7 @@
 </script>
 
 <div class="bg-white rounded transition-all hover:bg-gray-100">
-    <div on:click={() => onOpen(shown? -1: order_id ?? -1)} on:keydown class="cursor-pointer px-2 py-1 grid grid-cols-12">
+    <div on:click={() => onOpen(shown? -1: order_id ?? -1)} on:keydown class="cursor-pointer px-3 py-2 grid grid-cols-12">
         <div class="col-span-3 flex gap-3">
             <svg
                 style="tran" width="20" height="20" fill="none"
@@ -26,8 +26,8 @@
     </div>
 
     {#if shown}
-        <div transition:slide={{ duration: 300 }} class="px-1 grid grid-cols-12">
-            <div class="col-span-full grid grid-cols-12 text-sm text-gray-600 px-2">
+        <div transition:slide={{ duration: 300 }} class="px-5 grid grid-cols-12">
+            <div class="col-span-full grid grid-cols-12 text-sm text-gray-600 px-2 mb-1">
                 <div class="col-span-6">Name</div>
                 <div class="col-span-2">Amount</div>
                 <div class="col-span-2">Price</div>
@@ -42,6 +42,7 @@
                         <p class="rotate-45"><i class="bi bi-link"></i></p>
                     </div>
                 </a>
+                <hr class="col-span-full border-gray-400 last-of-type:hidden mx-2 mb-1"/>
              {/each}
              <div class="col-span-full mb-2"></div>
         </div>
