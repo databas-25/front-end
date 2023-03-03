@@ -72,12 +72,12 @@
     }
 </script>
 
-<div>
+<div class="w-[35rem] m-auto shadow-2xl rounded-xl border border-gray-300 mb-10 px-3">
     <ItemCard {prodID} product={null}/>
 
     {#if !(reviews.some((r) => r.User_id == userID) || userID == -1)}
 
-        <div class="m-auto w-[30rem] mt-5 bg-gray-50 p-1">
+        <div class="mt-5 bg-gray-50 p-1">
             <p class="text-2xl">Write a review:</p>
             <input class="border w-full mt-5" type="text" name="" id="" placeholder="Title" bind:value={title}/>
             <textarea class="border w-full mt-5" name="" id="" placeholder="Body" bind:value={body}/>

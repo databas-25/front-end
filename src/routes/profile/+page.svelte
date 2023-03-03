@@ -97,9 +97,9 @@
 </script>
 
 <div class="w-4/5 grid grid-cols-5 mx-auto h-fit bg-gray-200 p-1 rounded">
-    <div class="rounded border-2 bg-gray-500 text-gray-300 border-black justify-evenly h-fit"> <!-- div is for left side menu --> 
-        <p class="menuItem {current_tab==SUB_TABS.ACCOUNT_DETAILS? 'text-gray-200 bg-gray-700': ''}" on:click={()=>current_tab=SUB_TABS.ACCOUNT_DETAILS} on:keydown>Account Details</p>
-        <p class="menuItem {current_tab==SUB_TABS.ORDER_HISTORY? 'text-gray-200 bg-gray-700': ''}" on:click={()=>{current_tab=SUB_TABS.ORDER_HISTORY;succ=0}} on:keydown>Order History</p>
+    <div class="rounded border-2 bg-gray-500 text-gray-300 border-black justify-evenly h-fit"> <!-- div is for left side menu -->
+        <p class="menuItem py-1 px-1 cursor-pointer {current_tab==SUB_TABS.ACCOUNT_DETAILS? 'text-gray-200 bg-gray-700': ''}" on:click={()=>current_tab=SUB_TABS.ACCOUNT_DETAILS} on:keydown>Account Details</p>
+        <p class="menuItem py-1 px-1 cursor-pointer {current_tab==SUB_TABS.ORDER_HISTORY? 'text-gray-200 bg-gray-700': ''}" on:click={()=>{current_tab=SUB_TABS.ORDER_HISTORY;succ=0}} on:keydown>Order History</p>
     </div>
     {#if current_tab==SUB_TABS.ACCOUNT_DETAILS}
         <div class="rounded border-2 border-black col-span-4 text-center fit-content-center h-fit grid grid-cols-8 bg-gray-300 ml-4">
@@ -153,8 +153,7 @@
                 </div>
             {/each}
         </div> -->
-        <div class="col-span-4">
-            <p class="text-xl">Orders</p>
+        <div class="col-span-4 px-2">
             <div class="grid grid-cols-12 divide-x-0 divide-gray-600">
                 <p class="col-span-3 px-2">Order</p>
                 <p class="col-span-3 px-2"></p>
