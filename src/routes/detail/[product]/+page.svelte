@@ -78,6 +78,7 @@
     {#if !(reviews.some((r) => r.User_id == userID) || userID == -1)}
 
         <div class="m-auto w-[30rem] mt-5 bg-gray-50 p-1">
+            <p class="text-2xl">Write a review:</p>
             <input class="border w-full mt-5" type="text" name="" id="" placeholder="Title" bind:value={title}/>
             <textarea class="border w-full mt-5" name="" id="" placeholder="Body" bind:value={body}/>
             <div class="flex justify-between mt-5">
@@ -92,6 +93,10 @@
 
     {/if}
     <div class="m-auto w-[30rem] mt-5 flex flex-col gap-5">
+        <p class="text-2xl">Reviews:</p>
+        {#if (reviews)}
+            <p>There are no reviews yet</p>
+        {/if}
         {#each reviews as review}
             <Review_ {review}/>
         {/each}

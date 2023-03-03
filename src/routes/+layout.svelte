@@ -227,7 +227,7 @@
 			</a>
 		</div>
 		<div>
-			logged in as: {username}
+			Logged in as: {username}
 		</div>
 		<div class="flex gap-4">
 			<div class="relative">
