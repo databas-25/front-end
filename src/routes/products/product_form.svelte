@@ -10,6 +10,7 @@
         description: '',
         category: '',
         radius: 0,
+        rpm: 0,
     }
 
     const manufacturers = [
@@ -52,6 +53,10 @@
     <div>
         <p>radius</p>
         <input type="text" class="input-text" bind:value={def.radius}/>
+    </div>
+    <div>
+        <p>rpm</p>
+        <input type="number" class="input-text" bind:value={def.rpm}/>
     </div>
     <div>
         <p>Price</p>

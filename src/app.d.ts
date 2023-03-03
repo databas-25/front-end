@@ -25,6 +25,7 @@ declare global {
 		description: string,
 		manufacturer: string,
 		radius?: number,
+		rpm?:number,
 		category: string,
 	}
 
