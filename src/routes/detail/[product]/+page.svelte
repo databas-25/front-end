@@ -94,7 +94,7 @@
     {/if}
     <div class="m-auto w-[30rem] mt-5 flex flex-col gap-5">
         <p class="text-2xl">Reviews:</p>
-        {#if (reviews)}
+        {#if (!reviews.length)}
             <p>There are no reviews yet</p>
         {/if}
         {#each reviews as review}
