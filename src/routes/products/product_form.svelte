@@ -9,6 +9,7 @@
         price: 0,
         description: '',
         category: '',
+        radius: 0,
     }
 
     const manufacturers = [
@@ -47,6 +48,10 @@
     <div>
         <p>Image url</p>
         <input type="text" class="input-text" bind:value={def.img_address}/>
+    </div>
+    <div>
+        <p>radius</p>
+        <input type="text" class="input-text" bind:value={def.radius}/>
     </div>
     <div>
         <p>Price</p>
