@@ -195,6 +195,7 @@
 
 	function logout() {
 		window.localStorage.removeItem('auth_token');
+		cartAmount = 0;
 		user.set(null);
 	}
 
@@ -235,7 +236,7 @@
 						<span class="leading-[26px]"></span>
 						<i class="bi bi-list-task text-xl leading-7"></i>
 					</div>
-					{#if cartAmount > 0}
+					{#if cartAmount > 0 && permission < 10}
 						 <p class="absolute rounded-full pointer-events-none text-sm bg-red-600 text-white -right-2 -bottom-1 px-2">
 							 {cartAmount < 10? cartAmount : '9+'}
 						 </p>

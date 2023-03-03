@@ -1,8 +1,16 @@
 <script lang="ts">
+    import post from '~/script/web';
+
 
     function remove() {
         if (confirm("Are you sure you want to remove this product")) {
-            console.log("Removing...")
+            post(
+                'unpublish',
+                { Product_id: item.Product_id },
+                () => {},
+                () => {},
+                'product',
+            )
         }
     }
 

@@ -1,6 +1,7 @@
 
 <script lang="ts">
     import Select from 'svelte-select';
+	import ItemCard from '../detail/[product]/ItemCard.svelte';
 
     export let def: Product = {
         product_name: '',
@@ -33,7 +34,7 @@
     export let onSubmit = (product: Product) => { console.log(product) }
 </script>
 
-<div class="max-w-screen-sm flex flex-col gap-1 mx-5 pb-5">
+<div class="flex flex-col gap-1 mx-5 pb-5">
     <div>
         <p>Product name</p>
         <input type="text" class="input-text" bind:value={def.product_name}/>
@@ -68,5 +69,9 @@
     </div>
     <div class="flex justify-end">
         <button class="bg-blue-500 rounded-lg hover:bg-blue-400 text-white px-5 py-2" on:click={() => onSubmit(def)}>Save</button>
+    </div>
+    <p class="text-2xl">Preview</p>
+    <div class="bg-white rounded-xl shadow-inner border">
+        <ItemCard product={def} prodID={null}/>
     </div>
 </div>

@@ -13,8 +13,8 @@
         post(
             'create',
             product,
-            (data) => {
-                console.log(data);
+            () => {
+                window.location.pathname = "/";
             },
             (err) => {
                 console.error(err);
@@ -43,18 +43,17 @@
     }
 
     function updateProduct(product: Product) {
-        console.log(product);
-        // post(
-        //     "update_product",
-        //     { product },
-        //     (d) => {
-        //         console.log(d);
-        //     },
-        //     (e) => {
-        //         console.error(e);
-        //     },
-        //     "product"
-        // )
+        post(
+            "update_product",
+            { product },
+            (d) => {
+                window.location.pathname = "/";
+            },
+            (e) => {
+                console.error(e);
+            },
+            "product"
+        )
     }
 
     let selected = TABS.CREATE;

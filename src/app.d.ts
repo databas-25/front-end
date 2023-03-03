@@ -25,7 +25,7 @@ declare global {
 		description: string,
 		manufacturer: string,
 		radius?: number,
-		rpm?:number,
+		rpm?: number,
 		category: string,
 	}
 
@@ -41,11 +41,11 @@ declare global {
 		Order_Order_id?: number,
 		timestamp: Date,
 		Products_Product_id?: number,
-		amount: number, 
+		amount: number,
 		product_name: string,
 		price: number,
 	}
-	
+
 	interface Review {
 		User_id: number,
         title: string,
@@ -55,6 +55,5 @@ declare global {
 		reviewTime: Date,
     }
 }
-
 
 export {};

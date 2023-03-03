@@ -4,12 +4,11 @@
     import post from "~/script/web";
     import { modalOpen } from '@stores/modal_store';
 
-
     // might no be needed since layout has it. Although we do need them logged in to add an item
     let userID:number;
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
-    export let prodID:number;
+    export let prodID: number|null;
 
     /*interface Product {
 		Product_id?: number,
@@ -21,7 +20,7 @@
 		radius?: number,
 	}*/
 
-    let product:Product;
+    export let product:Product|null;
     function fetch_item_data(productID:number){
         post(
             "get_one",
@@ -42,7 +41,7 @@
         if (userID !== -1) {
             post(
                 'add_item',
-                { userID, productID: product.Product_id },
+                { userID, productID: product?.Product_id },
                 () => {
                     updateCartAmount();
                 },
@@ -59,9 +58,10 @@
     }
 
     onMount(() => {
-        fetch_item_data(prodID);
+        if (prodID) {
+            fetch_item_data(prodID);
+        }
 	});
-
 
 </script>
 
@@ -84,18 +84,29 @@
     <p class="itemDesc bg-gray-200 w-[30rem] min-h-[2.5rem] p-3 mt-5">{product?.description}</p>
     <div class="itemSpecs grid grid-cols-3 w-full">
         <div class="grid grid-rows-3 header">
-            <div class=" border-b-2 border-stone-300"><p>Manufacturer:</p></div>
-            <div class=" border-b-2 border-stone-300"><p>Radius:</p></div>
-            <div class=" "><p>Product ID:</p></div>
+            <div class="border-b-2 border-stone-300"><p>Manufacturer:</p></div>
+            <div class="border-b-2 border-stone-300"><p>Product ID:</p></div>
+            {#if product?.radius}
+                 <div class="border-b-2 border-stone-300"><p>Radius:</p></div>
+            {/if}
+            {#if product?.rpm}
+                 <div class="border-b-2 border-stone-300"><p>Rotation speed:</p></div>
+            {/if}
+            <!-- <div class="border-b-2 border-stone-300"><p>:</p></div>
+            <div class="border-b-2 border-stone-300"><p>Radius:</p></div> -->
         </div>
         <div class=" col-span-2 grid grid-rows-3 ">
             <p class=" border-b-2 border-stone-300 w-full text-right ">{product?.manufacturer}</p>
-            <p class=" border-b-2 border-stone-300 w-full text-right ">{product?.radius}</p>
-            <p class="  w-full text-right ">{product?.Product_id}</p>
+            <p class=" border-b-2 border-stone-300 w-full text-right ">{product?.Product_id ?? '?'}</p>
+            {#if product?.radius}
+                 <p class=" border-b-2 border-stone-300 w-full text-right ">{product?.radius} cm</p>
+            {/if}
+            {#if product?.rpm}
+                 <p class=" border-b-2 border-stone-300 w-full text-right ">{product?.rpm} rpm</p>
+            {/if}
         </div>
     </div>
 </div>
-
 
 <style lang="postcss">
 

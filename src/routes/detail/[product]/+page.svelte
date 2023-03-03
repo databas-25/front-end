@@ -74,7 +74,7 @@
 </script>
 
 <div>
-    <ItemCard {prodID}/>
+    <ItemCard {prodID} product={null}/>
 
     {#if !(reviews.some((r) => r.User_id == userID) || userID == -1)}
 
