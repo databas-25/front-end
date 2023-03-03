@@ -2,6 +2,9 @@
 	import post from "~/script/web";
 	import { loginAttempted, user, validUser } from "~/stores/user_store";
 	import Item from "../Item.svelte";
+	import _ from 'lodash';
+	import type { Dictionary } from "lodash";
+	import Order from "./Order.svelte";
 
 	let profileName:string;
 	let email:string;
@@ -10,6 +13,8 @@
     let userId: number;
     let succ = 0;
     let items: Array<OrderedItem> = [];
+    let grouped: Record<number, Array<OrderedItem>> = {};
+    let open = -1;
 
     user.subscribe((u) => {
 		if (validUser(u)) {
@@ -18,13 +23,12 @@
             profileNameTmp = profileName;
             emailTmp = email;
             userId = u.User_id;
-            
+
             let itemsTmp: Array<{
                 Order_id: number,
                 timestamp: Date,
                 Products_Product_id: number,
                 amount: number
-
             }> = [];
 
             post(
@@ -33,24 +37,19 @@
                     userID: userId
                 },
                 (d) => {
-                    console.log("here");
-                    console.log(d.result);
                     items = d.result??[];
                     items.forEach(i => {
                         i.timestamp = new Date(i.timestamp);
                     });
-                    console.log("items", items);
+                    grouped = _.groupBy(items, (i: OrderedItem) => i.Order_Order_id);
                 },
                 (e) => {
                     console.error(e);
                 },
                 "order"
             );
-
-            
 		}
     });
-
 
 	const SUB_TABS = {
 		ACCOUNT_DETAILS: 0,
@@ -132,7 +131,7 @@
             {/if}
         </div>
     {:else if current_tab==SUB_TABS.ORDER_HISTORY}
-        <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit bg-gray-500">
+        <!-- <div class="orderHistory rounded border-2 border-black col-span-4 text-center fit-content-center h-fit bg-gray-500">
 
             <div class="grid grid-cols-6 header">
                 <div class=" border-2 border-pink-400 rounded-full"><p>Order ID</p></div>
@@ -152,6 +151,20 @@
                     <div><p>{item.timestamp.toJSON()?.slice(0,10)?.replace(/-/g,'/')}</p></div>
                     <div><p>{item.price}</p></div>
                 </div>
+            {/each}
+        </div> -->
+        <div class="col-span-4">
+            <p class="text-xl">Orders</p>
+            <div class="grid grid-cols-12 divide-x-0 divide-gray-600">
+                <p class="col-span-3 px-2">Order</p>
+                <p class="col-span-3 px-2"></p>
+                <p class="col-span-2 px-2"></p>
+                <p class="col-span-2 px-2">Sum</p>
+                <p class="col-span-2 text-right">Date</p>
+            </div>
+            {#each Object.values(grouped) as items}
+                <Order {items} {open} onOpen={(o) => open = o}/>
+                <hr class="last-of-type:hidden border-gray-600"/>
             {/each}
         </div>
     {:else}

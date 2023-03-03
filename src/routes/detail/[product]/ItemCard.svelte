@@ -9,6 +9,7 @@
     user.subscribe((u) => userID = u?.User_id ?? -1)
 
     export let prodID: number|null;
+    $: published = product?.published != 0;
 
     /*interface Product {
 		Product_id?: number,
@@ -67,13 +68,16 @@
 
 <div class="productInfo grid grid-rows-10 justify-center justify-items-center">
     <!-- svelte-ignore a11y-img-redundant-alt -->
+    {#if !published}
+         <div class="absolute text-[100px] text-red-600 border-[10px] border-red-600 opacity-100 rounded-xl top-1/4 px-4 -rotate-45">DEPRECATED</div>
+    {/if}
     <img class="itemImg row-span-4 w-[30rem] h-[30rem] object-scale-down " src="{product?.img_address}" alt="Image failed to load"/>
     <div class=" row-span-2 grid w-[30rem]">
         <div class=" grid grid-cols-5">
             <p class="itemName text-3xl col-span-3 ">{product?.product_name}</p>
             <div class="col-span-2 grid grid-rows-2">
                 <p class="itemPrice text-3xl text-right">{product?.price} :-</p>
-                <button class=" rows-span-1 px-4 py-1 h-[3rem] w-[10rem] bg-red-500 rounded-full justify-self-end" on:click={addToCart} on:keydown>
+                <button class=" rows-span-1 px-4 py-1 h-[3rem] w-[10rem] {published? 'bg-red-500': 'bg-red-200'} rounded-full justify-self-end" disabled={!published} on:click={addToCart} on:keydown>
                     <i class="bi bi-cart-plus"></i>
                     Add to cart
                 </button>

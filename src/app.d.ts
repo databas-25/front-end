@@ -26,6 +26,7 @@ declare global {
 		manufacturer: string,
 		radius?: number,
 		rpm?: number,
+		published?: number,
 		category: string,
 	}
 

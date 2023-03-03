@@ -5,7 +5,6 @@
 	import ItemCard from "./ItemCard.svelte";
     import Review_ from "./Review.svelte";
 
-
     export let data: {product: string};
 
     let prodID = parseInt(data.product);
