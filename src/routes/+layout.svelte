@@ -220,16 +220,16 @@
 </script>
 
 <div class="max-w-screen min-h-[50vh] overflow-x-hidden">
-	<div class="flex select-none justify-between border-b-2 border-slate-400 p-2 align-baseline">
+	<div class="grid grid-cols-3 select-none border-b-2 border-slate-400 p-2 align-baseline">
 		<div class="text-2xl">
 			<a href="/">
 				<p><i class="bi bi-fan"></i>nly <span class="text-4xl text-sky-500" style="font-family: 'Yesteryear'">Fans</span></p>
 			</a>
 		</div>
-		<div>
-			Logged in as: {username}
+		<div class="text-center">
+			{username? `Logged in as: ${username}`: 'Not logged in'}
 		</div>
-		<div class="flex gap-4">
+		<div class="flex gap-4 justify-end">
 			<div class="relative">
 				<div class="relative h-10 aspect-square">
 					<div class="absolute right-0 w-full overflow-hidden rounded border-2 border-slate-500 px-4 py-1 text-center flex align-baseline justify-evenly cursor-pointer hover:bg-slate-100" on:click={menuOpen? closeMenu: openMenu} on:keydown={() => {}}>
