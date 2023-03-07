@@ -58,7 +58,7 @@
 
         post(
             'post',
-            { userID, productID: prodID, rating: selected, body, title },
+            { productID: prodID, rating: selected, body, title },
             (d) => {
                 window.location.reload();
             },

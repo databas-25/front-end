@@ -14,7 +14,6 @@
             'update_amount',
             {
                 productID: item.Products_Product_id,
-                userID,
                 amount: item.amount,
             },
             () => {
@@ -35,7 +34,6 @@
         post(
             'clearItem',
             {
-                userID,
                 productID: item.Products_Product_id
             },
             () => {},

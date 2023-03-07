@@ -13,9 +13,7 @@
 
             post(
                 "fetch_items",
-                {
-                    userId
-                },
+                {},
                 (d) => {
                     items = d.data;
                     onUpdate();

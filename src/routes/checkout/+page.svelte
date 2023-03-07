@@ -1,6 +1,6 @@
 <script>
 	import post from '~/script/web';
-    import { user, validUser } from '~/stores/user_store';
+    import { updateCartAmount, user, validUser } from '~/stores/user_store';
 
     const STATES = {
         VERIFYING: 0,
@@ -10,14 +10,12 @@
     let state = STATES.VERIFYING;
     user.subscribe((u) => {
         if (validUser(u)) {
-            const userID = u.User_id
             post(
                 'place',
-                {
-                    userID,
-                },
+                {},
                 (d) => {
                     state = d.success ? STATES.COMPLETE : STATES.FAILED;
+                    updateCartAmount();
                 },
                 () => {
                     state = STATES.FAILED;

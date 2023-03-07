@@ -1,3 +1,5 @@
+import { getCookie } from "./cookie";
+
 type roots = 'user' | 'cart' | 'order' | 'product' | 'review';
 
 export default function(path: string, data: unknown, success: (arg: any) => void, error: (arg: any) => void, root: roots = 'user') {
@@ -13,8 +15,10 @@ export default function(path: string, data: unknown, success: (arg: any) => void
 
     fetch(`${ip}/${root}/${path}`, {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${getCookie('auth_token')}`
         },
         body: JSON.stringify(data),
     })

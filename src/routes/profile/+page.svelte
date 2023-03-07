@@ -1,9 +1,7 @@
 <script lang="ts">
 	import post from "~/script/web";
-	import { loginAttempted, user, validUser } from "~/stores/user_store";
-	import Item from "../Item.svelte";
+	import { user, validUser } from "~/stores/user_store";
 	import _ from 'lodash';
-	import type { Dictionary } from "lodash";
 	import Order from "./Order.svelte";
 
 	let profileName:string;
@@ -24,18 +22,16 @@
             emailTmp = email;
             userId = u.User_id;
 
-            let itemsTmp: Array<{
-                Order_id: number,
-                timestamp: Date,
-                Products_Product_id: number,
-                amount: number
-            }> = [];
+            // let itemsTmp: Array<{
+            //     Order_id: number,
+            //     timestamp: Date,
+            //     Products_Product_id: number,
+            //     amount: number
+            // }> = [];
 
             post(
                 "getHistory",
-                {
-                    userID: userId
-                },
+                {},
                 (d) => {
                     items = d.result??[];
                     items.forEach(i => {
@@ -66,7 +62,6 @@
         post(
             "update",
             {
-                user: userId,
                 email: email,
                 username : profileName
             },
@@ -156,8 +151,7 @@
         <div class="col-span-4 px-2">
             <div class="grid grid-cols-12 divide-x-0 divide-gray-600">
                 <p class="col-span-3 px-2">Order</p>
-                <p class="col-span-3 px-2"></p>
-                <p class="col-span-2 px-2"></p>
+                <p class="col-span-5 px-2"></p>
                 <p class="col-span-2 px-2">Sum</p>
                 <p class="col-span-2 text-right">Date</p>
             </div>

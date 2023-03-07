@@ -9,7 +9,7 @@
 	import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
 	import { browser } from "$app/environment";
-	import { add } from "lodash";
+	import { deleteCookie, getCookie, setCookie } from "~/script/cookie";
 
 	const ACCESS = {
 		ADMIN: [
@@ -158,14 +158,13 @@
 				'sign_in',
 				authForm,
 				(d) => {
-					authModalOpen = false;
-					user.set(d.user)
-					globalThis.localStorage.setItem('auth_token', d.token);
+					setCookie('auth_token', d.token, 365);
+					window.location.reload();
 				},
 				(e) => {
 					authErrorMessage = MESSAGES.LOGIN_FAILED;
 				},
-			)
+			);
 		}
 	}
 
@@ -175,11 +174,11 @@
 				'sign_up',
 				authForm,
 				(d) => {
-					authModalOpen = false;
-					user.set(d.user)
-					globalThis.localStorage.setItem('auth_token', d.token)
+					setCookie('auth_token', d.token, 365);
+					window.location.reload();
 				},
 				(e) => {
+					console.error(e);
 					switch (e.responseJSON.message) {
 						case 'duplicate_keys':
 							authErrorMessage = MESSAGES.USERNAME_TAKEN;
@@ -189,28 +188,27 @@
 							break;
 					}
 				},
-			)
+			);
 		}
 	}
 
 	function logout() {
-		window.localStorage.removeItem('auth_token');
-		cartAmount = 0;
-		user.set(null);
+		deleteCookie('auth_token');
+		window.location.reload();
 	}
 
 	onMount(() => {
-		const token = window.localStorage.getItem("auth_token");
+		const token = getCookie('auth_token');
 		if (token) {
 			post(
 				'token_sign_in',
-				{ token },
+				{ },
 				(d) => {
 					loginAttempted.set(true);
 					user.set(d.user);
 				},
 				() => {
-					window.localStorage.removeItem("auth_token");
+					deleteCookie('auth_token');
 				},
 			);
 		}

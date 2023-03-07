@@ -42,7 +42,7 @@
         if (userID !== -1) {
             post(
                 'add_item',
-                { userID, productID: product?.Product_id },
+                { productID: product?.Product_id },
                 () => {
                     updateCartAmount();
                 },

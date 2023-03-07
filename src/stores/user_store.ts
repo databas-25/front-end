@@ -16,9 +16,7 @@ export const cartAmount = writable(0);
 export const updateCartAmount = () => {
     post(
         'get_amount',
-        {
-            userId,
-        },
+        {},
         (d) => {
             cartAmount.set(d.result);
         },
