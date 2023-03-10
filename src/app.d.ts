@@ -22,6 +22,7 @@ declare global {
 		product_name: string,
 		img_address: string,
 		price: number,
+		stock: number,
 		description: string,
 		manufacturer: string,
 		radius?: number,

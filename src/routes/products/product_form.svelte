@@ -8,6 +8,7 @@
         manufacturer: '',
         img_address: '',
         price: 0,
+        stock: 0,
         description: '',
         category: '',
         radius: 0,
