@@ -55,6 +55,12 @@ declare global {
         rating: number,
 		reviewTime: Date,
     }
+
+	interface adminOrders {
+		Order_id?: number
+		User_id?: number,
+		timestamp: Date,
+	}
 }
 
 export {};

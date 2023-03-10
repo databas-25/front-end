@@ -3,10 +3,13 @@
     import post from '~/script/web';
 	import { onMount } from 'svelte';
 	import ProductRow from './product_row.svelte';
+	import { each } from 'jquery';
+	import OrderRow from './order_row.svelte';
 
     const TABS = {
         CREATE: 0,
         EDIT: 1,
+        ADMINVIEW: 2
     }
 
     function createProduct(product: Product) {
@@ -22,6 +25,7 @@
             'product',
         )
     }
+    
     let products: Array<Product> = [];
     onMount(() => {
         post(
@@ -56,6 +60,23 @@
         )
     }
 
+    let orders: Array<adminOrders> = [];
+
+    function getOrders(){
+        post(
+            "getAll", 
+            {}, 
+            (d) => {
+                orders = d.result;      // maybe as adminOrder
+                console.log(orders);
+            },
+            (e) => {
+                console.error(e);
+            },
+            "order"
+        );
+    }
+
     let selected = TABS.CREATE;
 </script>
 
@@ -63,6 +84,7 @@
     <div class="bg-slate-500 h-fit rounded-xl overflow-clip">
         <p class="tab-item {selected == TABS.CREATE? 'bg-white bg-opacity-25': ''}" on:click={()=>selected=TABS.CREATE} on:keydown>Create new product</p>
         <p class="tab-item {selected == TABS.EDIT? 'bg-white bg-opacity-25': ''}" on:click={()=>selected=TABS.EDIT} on:keydown>Edit product</p>
+        <p class="tab-item {selected == TABS.ADMINVIEW? 'bg-white bg-opacity-25': ''}" on:click={()=>selected=TABS.ADMINVIEW} on:keydown>View orders</p>
     </div>
     <div class="col-span-4 bg-slate-200 h-fit rounded-xl p-2">
         {#if selected == TABS.CREATE}
@@ -85,6 +107,12 @@
                     <hr class="border-gray-600 last-of-type:hidden"/>
                 {/each}
             {/if}
+        {:else if selected == TABS.ADMINVIEW}
+            <p class="text-2xl">ORDERS</p>
+            {#each orders as order}
+                <OrderRow data={order}/>
+                <hr class="border-gray-600 last-of-type:hidden"/>
+            {/each}
         {/if}
     </div>
 </div>
