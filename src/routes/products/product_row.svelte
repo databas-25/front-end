@@ -41,15 +41,15 @@
     export let item: Product;
     export let onSelect = () => {};
 </script>
-<div class="grid grid-cols-12 bob p-2">
-    <div class="col-span-8 px-2 flex">
+<div class="grid grid-cols-12 max-w-[45rem] bob p-2">
+    <div class="col-span-6 px-2 flex">
         <img src={item.img_address} class="h-12 object-scale-down" alt="j"/>
         <div class="flex flex-col justify-center px-3">
             <p>{item.product_name}</p>
         </div>
     </div>
-    <div class="text-center flex flex-col justify-center"><p>{item.price} kr</p></div>
-    <div class="flex flex-col justify-center">
+    <div class="text-center flex flex-col col-span-2 justify-center"><p>{item.price} kr</p></div>
+    <div class="flex flex-col col-span-2 justify-center">
         <div class="flex justify-evenly align-baseline">
             <div class="w-8 border border-gray-600 rounded-full aspect-square flex flex-col justify-center select-none hover:bg-black hover:bg-opacity-10 cursor-pointer" on:click={() => editItemAmount(-1)} on:keydown>
                 <p class="h-fit w-full text-center">-</p>

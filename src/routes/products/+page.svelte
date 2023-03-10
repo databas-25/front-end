@@ -5,6 +5,7 @@
 	import ProductRow from './product_row.svelte';
 	import { each } from 'jquery';
 	import OrderRow from './order_row.svelte';
+    import _ from 'lodash';
 
     const TABS = {
         CREATE: 0,
@@ -39,6 +40,7 @@
             },
             "product"
         )
+        getOrders();
     });
 
     let selected_product: Product | null;
@@ -60,15 +62,16 @@
         )
     }
 
-    let orders: Array<adminOrders> = [];
+    let orders: _.Dictionary<Array<adminOrders>> = {};
 
     function getOrders(){
         post(
             "getAll", 
             {}, 
             (d) => {
-                orders = d.result;      // maybe as adminOrder
-                console.log(orders);
+                const results = d.result as Array<adminOrders>;
+                orders = _.groupBy(results, (o) => o.User_id);
+                getBaskets();
             },
             (e) => {
                 console.error(e);
@@ -76,6 +79,40 @@
             "order"
         );
     }
+
+    function getBaskets(){
+        post(
+            "getAll", 
+            {}, 
+            (d) => {
+                const results = d.result as Array<adminBasket>;
+                const baskets = _.groupBy(results, (b) => b.Users_User_id);
+                for(let [user, basket] of Object.entries(baskets)) {
+                    if (orders[user]) {
+                        orders[user].push({
+                            User_id: basket[0].Users_User_id,
+                            timestamp: new Date(),
+                            user_name: basket[0].user_name,
+                        });
+                    } else {
+                        orders[user] = [{
+                            User_id: basket[0].Users_User_id,
+                            timestamp: new Date(),
+                            user_name: basket[0].user_name,
+                        }];
+                    }
+                }
+                // baskets = _.groupBy(results, (o) => o.User_id);      // maybe as adminOrder
+            },
+            (e) => {
+                console.log("Error Getting basket");
+                console.error(e);
+            },
+            "cart",
+        );
+    }
+
+    let open = -1;
 
     let selected = TABS.CREATE;
 </script>
@@ -109,8 +146,8 @@
             {/if}
         {:else if selected == TABS.ADMINVIEW}
             <p class="text-2xl">ORDERS</p>
-            {#each orders as order}
-                <OrderRow data={order}/>
+            {#each Object.values(orders) as order}
+                <OrderRow items={order} {open} onOpen={(u) => open = u}/>
                 <hr class="border-gray-600 last-of-type:hidden"/>
             {/each}
         {/if}

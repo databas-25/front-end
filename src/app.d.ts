@@ -61,6 +61,13 @@ declare global {
 		Order_id?: number
 		User_id?: number,
 		timestamp: Date,
+		user_name: string,
+	}
+
+	interface adminBasket {
+		Users_User_id?: number
+		Products_Product_id?: number,
+		user_name: string,
 	}
 }
 
